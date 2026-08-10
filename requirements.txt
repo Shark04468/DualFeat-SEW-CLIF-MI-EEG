@@ -1,0 +1,12 @@
+numpy>=1.26,<2
+pandas>=2.0,<2.3
+pyyaml>=6.0,<7
+einops>=0.7,<0.9
+torch>=2.2,<2.4
+scipy>=1.11,<1.13
+scikit-learn>=1.4,<1.6
+matplotlib>=3.8,<3.9
+statsmodels>=0.14,<0.15
+mne>=1.6,<1.9
+moabb>=1.1,<1.2
+pyriemann>=0.6,<0.8

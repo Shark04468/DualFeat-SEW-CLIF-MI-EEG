@@ -1,0 +1,29 @@
+experiment: v16_a_continuous_fusion
+protocol: bci2a_session_t_nested_six_fold
+subjects: [1, 3, 8]
+seeds: [0]
+folds: [0, 1, 2, 3, 4, 5]
+training:
+  epochs: 120
+  patience: 20
+  minimum_outer_epochs: 1
+  batch_size: 48
+  weight_decay: 0.001
+  temporal_layers: 2
+  band_channels: 8
+hpo:
+  - {hidden_channels: 64, dropout: 0.10, learning_rate: 0.0003}
+  - {hidden_channels: 64, dropout: 0.10, learning_rate: 0.0010}
+  - {hidden_channels: 64, dropout: 0.25, learning_rate: 0.0003}
+  - {hidden_channels: 64, dropout: 0.25, learning_rate: 0.0010}
+  - {hidden_channels: 96, dropout: 0.10, learning_rate: 0.0003}
+  - {hidden_channels: 96, dropout: 0.10, learning_rate: 0.0010}
+  - {hidden_channels: 96, dropout: 0.25, learning_rate: 0.0003}
+  - {hidden_channels: 96, dropout: 0.25, learning_rate: 0.0010}
+gate:
+  minimum_accuracy: 0.885
+  maximum_teacher_gap: 0.005
+  v9_reference_variant: sew_clif_kd
+heldout:
+  session_e_accessed: false
+  openbmi_s2_accessed: false

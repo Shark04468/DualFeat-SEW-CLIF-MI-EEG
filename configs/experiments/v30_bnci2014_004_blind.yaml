@@ -1,0 +1,70 @@
+experiment_id: V30_BNCI2014_004_BLIND_CONFIRMATION
+schema: dpc-snn-v30-bnci2014-004-blind/v1
+status: project_level_blind_external_confirmation
+protocol: train_01T_02T_03T_checkpoint_barrier_then_evaluate_04E_05E
+dataset:
+  name: BNCI2014_004
+  public_name: BCI Competition IV Dataset 2b
+  subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  training_sessions: [01T, 02T, 03T]
+  evaluation_sessions: [04E, 05E]
+  trial_policy: retain_all_labelled_trials_from_each_frozen_session
+  training_trials_minimum: 400
+  training_trials_maximum: 440
+  evaluation_trials_minimum: 300
+  evaluation_trials_maximum: 400
+  events: [left_hand, right_hand]
+  channels: [C3, Cz, C4]
+  source_sfreq: 250.0
+  epoch_tmin: -1.0
+  epoch_tmax: 4.0
+  external_reference:
+    documentation: https://moabb.neurotechx.com/docs/generated/moabb.datasets.BNCI2014_004.html
+    loader_source: https://github.com/NeuroTechX/moabb/blob/develop/moabb/datasets/bnci/bnci_2014.py
+blindness:
+  project_source_references_before_protocol: 0
+  cloud_cache_files_before_protocol: 0
+  evaluation_sessions_previously_accessed_by_project: false
+  evaluation_data_may_not_be_loaded_before_global_checkpoint_barrier: true
+seeds: [0, 1, 2, 3, 4]
+teacher_models: [atcnet, fbcnet]
+variants: [ann_sew_ce, sew_clif_ce]
+training:
+  teacher_fixed_epochs: 80
+  student_fixed_epochs: 80
+  effective_batch_size: 48
+  teacher_physical_batch_size:
+    atcnet: 48
+    fbcnet: 16
+  student_batch_size: 48
+  student_learning_rate: 0.001
+  student_weight_decay: 0.001
+  firing_rate_weight: 0.01
+  augmentation:
+    enabled: true
+    parent_scope: current_training_sessions_only
+    segments: 8
+    probability: 0.5
+    noise_std: 0.01
+    scale_range: [0.9, 1.1]
+preprocessing:
+  reference: CAR
+  baseline_interval_seconds: [-1.0, 0.0]
+  task_interval_seconds: [0.0, 4.0]
+  gain: complete_training_sessions_channel_rms
+  clip_after_gain: 12.0
+model:
+  n_classes: 2
+  hidden_channels: 64
+  decoder_layers: 2
+  readout_features: 96
+  dropout: 0.25
+selection:
+  source: frozen_V29_architecture_and_fixed_schedule
+  bnci2014_004_used_for_architecture_or_hyperparameter_selection: false
+gate:
+  inferential_unit: subject_after_averaging_five_paired_seeds
+  mean_subject_gain_pp_minimum: 0.5
+  positive_subjects_minimum: 6
+  one_sided_wilcoxon_maximum: 0.05
+  mean_snn_minus_ann_noninferiority_pp: 0.0

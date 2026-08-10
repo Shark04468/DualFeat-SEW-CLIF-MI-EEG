@@ -1,0 +1,26 @@
+experiment_id: E31Z_SMOKE
+schema: dpc-snn-e31zp-decoder-learning-curve/v1
+status: implementation_smoke_only
+datasets:
+  bci2a: {subjects: [1], n_classes: 4, training_session: T, evaluation_session: E}
+  openbmi: {subjects: [1], n_classes: 2, training_session: S1, evaluation_session: S2}
+  bnci2014_004:
+    subjects: [1]
+    n_classes: 2
+    training_sessions: [01T, 02T, 03T]
+    evaluation_sessions: [04E, 05E]
+seeds: [0]
+budgets:
+  bci2a: [n25, n50, all]
+  openbmi: [n25, all]
+  bnci2014_004: [n25, n50, n100, all]
+training:
+  variant: sew_clif_ce
+  fixed_epochs: 2
+  batch_size: 48
+  learning_rate: 0.001
+  weight_decay: 0.001
+  firing_rate_weight: 0.0
+model: {hidden_channels: 64, decoder_layers: 2, readout_features: 96, dropout: 0.25}
+analysis: {subject_cluster_bootstrap_repetitions: 100}
+

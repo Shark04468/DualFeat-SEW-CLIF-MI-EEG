@@ -1,0 +1,163 @@
+experiment_id: V50_EVENT_NATIVE_GATE
+protocol: v50_repeated_session_T_event_native_delay_gate
+architecture_version: dpc_snn_v5_event_native
+
+transport_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 12.0]
+  - [12.0, 14.0]
+  - [14.0, 17.0]
+  - [17.0, 20.0]
+  - [20.0, 23.0]
+  - [23.0, 26.0]
+  - [26.0, 30.0]
+  - [30.0, 34.0]
+  - [34.0, 37.0]
+  - [37.0, 40.0]
+
+classification_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 13.0]
+  - [13.0, 18.0]
+  - [18.0, 24.0]
+  - [24.0, 30.0]
+  - [30.0, 40.0]
+
+model_overrides:
+  delay_evidence_estimator: continuous_signed_phase
+  continuous_delay_grid_oversample: 4
+  continuous_delay_min_bayes_factor: 3.0
+  continuous_delay_min_bootstrap_frequency: 0.70
+  continuous_delay_min_direction_probability: 0.80
+  fold_local_bootstrap_samples: 128
+  freeze_shared_physical_basis: true
+  freeze_shared_filterbank: true
+  freeze_delay_after_pretrain: true
+  preserve_transport_band_pairs: true
+  preserve_graph_rate: true
+  delayed_stat_channels: 0
+  delayed_directional_moments: false
+  event_native_transport: true
+  event_envelope_threshold: 0.05
+  event_phase_confidence_threshold: 0.10
+  learnable_event_threshold: false
+  event_timing_intervention: none
+  event_timing_seed: 501
+  checkpoint_event_routes: true
+  multiscale_snn: true
+  decoder_timescales: [0.65, 0.90, 0.975]
+  snn_native_readout: true
+  snn_readout_decays: [0.50, 0.90, 0.99]
+  decoder_mode: snn
+  decoder_layers: 2
+  decoder_neuron: clif
+  sew_connect_function: ADD
+  causal_channel_norm: false
+  use_membrane_readout: false
+  temporal_pool_channels: 16
+  cumulative_readout_seconds: [1.0, 2.0, 4.0]
+  use_cross_band_routes: true
+  n_delay_experts: 4
+  delay_expert_topk: 2
+  graph_sparsity: 0.02
+  rejected_route_prior_floor: 0.02
+  regularization:
+    spike_rate: 0.01
+    graph_l1: 0.0001
+    delay_entropy: 0.0
+    delay_gate_structure: 0.001
+    spatial_orthogonal: 0.0
+    graph_prior: 0.0001
+    delay_alignment: 0.01
+    delay_anchor_kl: 0.1
+    expert_balance: 0.1
+    expert_diversity: 0.01
+
+training_overrides:
+  tet_loss_weight: 0.10
+  event_threshold_quantile: 0.90
+  event_threshold_max_samples_per_band: 200000
+
+paired_gate_variants:
+  - name: fixed_audited_delay
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    matched_transport_control: true
+    decoder_mode: snn
+    event_timing_intervention: none
+  - name: matched_zero_delay
+    fixed_delay_steps: 0.0
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    matched_transport_control: true
+    decoder_mode: snn
+    event_timing_intervention: none
+
+five_stages:
+  - name: matched_zero_delay
+    fixed_delay_steps: 0.0
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    matched_transport_control: true
+    decoder_mode: snn
+    event_timing_intervention: none
+    reuse_audited_route_gain: true
+  - name: fixed_audited_delay
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    matched_transport_control: true
+    decoder_mode: snn
+    event_timing_intervention: none
+  - name: matched_ann_dynamics
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    matched_transport_control: true
+    decoder_mode: matched_ann
+    event_timing_intervention: none
+    reuse_audited_route_gain: true
+  - name: event_timing_shuffle
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    matched_transport_control: true
+    decoder_mode: snn
+    event_timing_intervention: shuffle
+    reuse_audited_route_gain: true
+  - name: learned_continuous_delay
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: false
+    matched_transport_control: false
+    decoder_mode: snn
+    event_timing_intervention: none
+    reuse_audited_route_gain: true
+
+non_negotiable:
+  evidence_fit_scope: inner_training_fold_only
+  heldout_session_E_accessed: false
+  zero_delay_is_route_null: false
+  route_null: independent_phase_surrogate
+  continuous_signed_delay_grid_oversample: 4
+  route_minimum_bayes_factor: 3.0
+  conditional_positive_delay_minimum_bayes_factor: 3.0
+  bootstrap_acceptance_frequency: 0.70
+  positive_delay_posterior_probability: 0.80
+  source_target_band_pairs_preserved: true
+  all_classification_information_mandatory_delayed: true
+  carrier_and_envelope_are_events_before_delay: true
+  no_route_rms_classifier_feature: true
+  no_temporal_mean_std_classifier_feature: true
+  no_membrane_or_analog_classifier_bypass: true
+  multiscale_clif_timescales: [fast, medium, slow]
+  final_state_is_respiked: true
+  matched_ann_has_equal_trainable_parameter_count: true
+  timing_ablation_preserves_event_count: true
+  minimum_accepted_delay_edges: 1
+  phase_surrogate_must_reduce_support: true
+  time_reversal_max_transpose_mae: 0.05
+  checkpoint_rule: fixed_last_epoch

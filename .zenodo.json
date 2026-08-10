@@ -1,0 +1,49 @@
+{
+  "title": "DualFeat-SEW-CLIF MI-EEG frozen reproducibility evidence archive",
+  "upload_type": "software",
+  "description": "Frozen source, configurations, trial-level predictions and logits, participant-level metrics, statistical scripts, provenance records, environment information, figures, and SHA-256 checksums supporting the manuscript 'Evidence for sample-regime-dependent benefits of structured spiking dynamics in motor-imagery EEG decoding'. Raw and processed EEG signals and feature caches are excluded because of third-party dataset licensing.",
+  "creators": [
+    {
+      "name": "Sha, Yijun",
+      "orcid": "0009-0003-8255-804X",
+      "affiliation": "University of Shanghai for Science and Technology"
+    },
+    {
+      "name": "Xu, Jiangdi",
+      "orcid": "0009-0009-2358-3791",
+      "affiliation": "University of Shanghai for Science and Technology"
+    },
+    {
+      "name": "An, Fengming",
+      "orcid": "0009-0008-9214-4330",
+      "affiliation": "University of Shanghai for Science and Technology"
+    },
+    {
+      "name": "Kong, Xiangyong",
+      "orcid": "0009-0006-9925-5215",
+      "affiliation": "University of Shanghai for Science and Technology"
+    },
+    {
+      "name": "Zhang, Dong",
+      "affiliation": "Shanghai Jiao Tong University Affiliated Sixth People's Hospital South Campus"
+    }
+  ],
+  "version": "1.0.0",
+  "publication_date": "2026-08-10",
+  "license": "cc-by-4.0",
+  "keywords": [
+    "motor imagery EEG",
+    "brain-computer interface",
+    "spiking neural network",
+    "CLIF",
+    "reproducibility"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Shark04468/DualFeat-SEW-CLIF-MI-EEG",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Reserved/published DOI: 10.5281/zenodo.21867114"
+}

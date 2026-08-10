@@ -1,0 +1,25 @@
+baselines:
+  - name: eegnet
+    family: cnn
+  - name: vanilla_snn
+    family: snn
+  - name: graph_snn_no_delay
+    family: graph_snn
+  - name: csp_lda
+    family: classical
+  - name: riemann_lr
+    family: classical
+fairness:
+  seeds: [0, 1, 2, 3, 4]
+  same_split: true
+  same_preprocess: true
+  max_hparam_trials: 20
+  # Inner-validation candidates use the same fixed selection budget; the
+  # selected configuration is then trained with the experiment's final budget.
+  tuning_epochs: 30
+  report:
+    - params
+    - trainable_params
+    - train_seconds
+    - inference_ms
+    - peak_memory_mb

@@ -1,0 +1,47 @@
+experiment_id: v9_e3_dual_feature_pilot
+stage: session_t_development
+dataset: bci2a_v62
+subjects: [1, 3, 8]
+seeds: [0, 1, 2]
+folds: [0, 1, 2, 3, 4, 5]
+teacher:
+  branches: [atcnet, fbcnet]
+  target: equal_probability
+  checkpoints: fold_local_frozen
+student:
+  atc_sequence: [18, 32]
+  fbc_sequence: [4, 288]
+  hidden_channels: 64
+  decoder_layers: 2
+  variants:
+    - ann_plain_ce
+    - plif_plain_ce
+    - clif_plain_ce
+    - ann_sew_ce
+    - sew_clif_ce
+    - ann_sew_kd
+    - sew_clif_kd
+training:
+  epochs: 160
+  patience: 30
+  minimum_outer_epochs: 20
+  batch_size: 48
+  optimizer: AdamW
+  learning_rate: 0.001
+  weight_decay: 0.001
+  kd_weight: 0.35
+  kd_temperature: 2.0
+  firing_rate_weight: 0.01
+selection:
+  data: session_t_inner_validation_only
+  primary_metric: kappa
+  tie_breakers: [accuracy, earliest_epoch]
+locked_data:
+  bci2a_session_e: true
+  openbmi_session_s2: true
+promotion_gate:
+  single_fold:
+    required: finite_metrics_and_exact_teacher_replay
+  full_pilot:
+    snn_vs_matched_ann_pp_min: -0.3
+    accuracy_or_sparsity_advantage_required: true

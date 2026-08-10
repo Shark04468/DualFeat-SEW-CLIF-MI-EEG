@@ -1,0 +1,71 @@
+experiment_id: V8_E3_DELAY_RESIDUAL_CANARY
+schema: dpc-snn-v8-e3-delay-residual-canary/v2
+stage: development_canary
+protocol: bci2a_session_t_nested_six_fold_oof
+
+subjects: [1]
+seeds: [0]
+folds: [0]
+variants: [ann_sew, sew_clif]
+
+delay:
+  stage: static_slow_within_band
+  route_scope: within_band
+  signal_mode: slow_envelope
+  allow_cross_band: false
+  maximum_routes: 64
+  maximum_delay_samples: 8
+  prior_seed_scope: subject_fold_fixed_across_classifier_seeds
+  prior:
+    fit_scope: active_inner_or_outer_training_partition_only
+    bootstrap_samples: 32
+    grid_oversample: 4
+    minimum_bayes_factor: 3.0
+    minimum_bootstrap_frequency: 0.70
+    minimum_direction_probability: 0.80
+    require_all_negative_controls: true
+
+expert:
+  decoder_channels: 32
+  decoder_layers: 1
+  decoder_decays: [0.65, 0.90, 0.975]
+  fast_rate_hz: 125.0
+  temporal_decimation: 2
+  endpoint_seconds: [0.5, 1.0, 2.0, 4.0]
+  readout_features: 64
+  dropout: 0.25
+  firing_rate_target: 0.08
+
+selection:
+  max_epochs: 40
+  minimum_epochs: 8
+  minimum_outer_epochs: 8
+  checkpoint_metric: mean_full_zero_validation_kappa
+  shared_epoch_rule: paired_mean_kappa_then_accuracy_then_earliest
+
+training:
+  batch_size: 4
+  gradient_accumulation_steps: 2
+  effective_batch_size: 8
+  learning_rate: 0.001
+  weight_decay: 0.001
+  firing_rate_weight: 0.02
+  matched_full_zero_training_budget: true
+
+residual_fusion:
+  anchor: equal_probability_atcnet_fbcnet
+  mode: anchor_entropy
+  maximum_expert_weight: 0.05
+  temperature_calibration: false
+  learned_weight: false
+
+controls:
+  matched_zero_changes_only: delay_posterior_to_point_mass_at_zero
+  same_weight_zero_ablation: true
+  shared_route_edge_confidence_gain: true
+  exact_parameter_shape_match_ann_snn: true
+
+data_access:
+  allowed_session: T
+  heldout_session_e_accessed: false
+  openbmi_session_s2_accessed: false

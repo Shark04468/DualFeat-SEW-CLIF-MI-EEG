@@ -1,0 +1,114 @@
+experiment_id: V8_POSTHOC_PUBLICATION_BASELINES
+schema: dpc-snn-v8-posthoc-publication-baselines/v1
+status: posthoc_explanatory_after_bci2a_e_and_openbmi_s2_opened
+
+models: [eegnet, fbcnet, atcnet, tcformer, eeg_conformer, bfatcnet]
+seeds: [0, 1, 2, 3, 4]
+fixed_epochs: 80
+effective_batch_size: 48
+physical_batch_size:
+  eegnet: 48
+  fbcnet: 16
+  atcnet: 48
+  tcformer: 48
+  eeg_conformer: 48
+  bfatcnet: 48
+
+datasets:
+  bci2a:
+    subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    train_session: T
+    evaluation_session: E
+    n_classes: 4
+    expected_train_trials: 288
+    expected_evaluation_trials: 288
+    target_sfreq: 250.0
+  openbmi:
+    subjects:
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+       19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
+       35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+       51, 52, 53, 54]
+    reporting_cohorts:
+      full_54:
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+         19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
+         35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+         51, 52, 53, 54]
+      locked_e8_42:
+        [1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 14, 16, 18, 20, 21, 22, 23,
+         25, 26, 28, 30, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 43, 44,
+         46, 47, 48, 49, 50, 51, 52, 53, 54]
+      development_12: [7, 12, 13, 15, 17, 19, 24, 27, 29, 31, 41, 45]
+    train_session: S1
+    evaluation_session: S2
+    n_classes: 2
+    expected_train_trials: 100
+    expected_evaluation_trials: 100
+    source_sfreq: 1000.0
+    target_sfreq: 250.0
+    channel_adapter:
+      policy: fixed_linear_missing_sensor_interpolation
+      derived_channels:
+        FCz:
+          source_channels: [FC1, FC2]
+          weights: [0.5, 0.5]
+
+channel_names:
+  [Fz, FC3, FC1, FCz, FC2, FC4, C5, C3, C1, Cz, C2, C4, C6,
+   CP3, CP1, CPz, CP2, CP4, P1, Pz, P2, POz]
+
+preprocessing:
+  reference: CAR
+  baseline_interval_seconds: [-1.0, 0.0]
+  task_interval_seconds: [0.0, 4.0]
+  gain: complete_training_session_channel_rms
+  clip_after_gain: 12.0
+  model_views:
+    eegnet:
+      task_crop_seconds: [0.5, 2.5]
+      anti_alias_resample_hz: 128.0
+    fbcnet:
+      causal_chebyshev_ii_filterbank_hz:
+        [[4, 8], [8, 12], [12, 16], [16, 20], [20, 24], [24, 28],
+         [28, 32], [32, 36], [36, 40]]
+    eeg_conformer:
+      zero_phase_bandpass_hz: [4, 40]
+    all_others:
+      task_crop_seconds: [0.0, 4.0]
+
+augmentation:
+  enabled: true
+  parent_scope: current_training_session_batch_only
+  segments: 8
+  probability: 0.5
+  noise_std: 0.01
+  scale_range: [0.9, 1.1]
+
+analysis:
+  fusion_components: [atcnet, fbcnet]
+  fusion_probability_weights: [0.5, 0.5]
+  frequency_occlusions_hz:
+    theta_4_8: [4.0, 8.0]
+    mu_8_13: [8.0, 13.0]
+    low_beta_13_20: [13.0, 20.0]
+    high_beta_20_30: [20.0, 30.0]
+    low_gamma_30_40: [30.0, 40.0]
+  region_partition:
+    left_motor: [FC3, FC1, C5, C3, C1, CP3, CP1]
+    midline_motor: [FCz, Cz, CPz]
+    right_motor: [FC2, FC4, C2, C4, C6, CP2, CP4]
+    frontal: [Fz]
+    posterior: [P1, Pz, P2, POz]
+  saliency: absolute_input_gradient_times_input_for_true_class
+  bootstrap_repeats: 10000
+  inferential_unit: subject
+  seeds_are_paired_optimization_repeats: true
+  average_seeds_within_subject_first: true
+
+canary:
+  models: [eegnet, fbcnet]
+  seeds: [0]
+  bci2a_subjects: [1]
+  openbmi_subjects: [1]
+  fixed_epochs: 2

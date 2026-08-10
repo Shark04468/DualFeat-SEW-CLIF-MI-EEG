@@ -1,0 +1,21 @@
+name: dpc-snn-research
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip=24.0
+  - numpy=1.26.4
+  - pandas=2.2.2
+  - scipy=1.12.0
+  - scikit-learn=1.5.2
+  - matplotlib=3.8.4
+  - statsmodels=0.14.2
+  - pytorch=2.2.2
+  - pip:
+      - PyYAML==6.0.2
+      - mne==1.8.0
+      - moabb==1.1.1
+      - pyriemann==0.7
+      - pytest==8.3.5
+      - ruff==0.9.10

@@ -1,0 +1,44 @@
+experiment_id: V8_E4_ENTROPY_GATED_RESIDUAL_CONFIRMATION
+schema: dpc-snn-v8-e4-entropy-residual-lock/v1
+stage: confirmation
+protocol: bci2a_session_t_nested_six_fold_oof
+
+development:
+  subjects: [1, 3, 8]
+  seeds: [0]
+  candidate_modes: [fixed, anchor_entropy]
+  candidate_max_weights: [0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.3333333333333333]
+  candidate_count: 14
+  selected_from: subject_macro_accuracy
+  selected_snn_macro_accuracy: 0.8935185185185185
+  selected_matched_ann_macro_accuracy: 0.8923611111111112
+  anchor_macro_accuracy: 0.8912037037037037
+
+selection:
+  selected_snn_variant: sew_clif
+  matched_ann_control: ann_sew
+  mode: anchor_entropy
+  maximum_decoder_weight: 0.05
+  equation: p_final=(1-g)*p_anchor+g*p_decoder; g=0.05*H(p_anchor)/log(4)
+  temperature_calibration: false
+  learned_fusion_weights: false
+
+confirmation:
+  subjects: [1, 3, 8]
+  seeds: [1, 2]
+  folds: [0, 1, 2, 3, 4, 5]
+  macro_snn_vs_matched_ann_minimum_delta_pp: -0.3
+  macro_snn_vs_anchor_minimum_delta_pp: 0.0
+  minimum_positive_subject_seed_pairs: 4
+  per_pair_snn_vs_anchor_floor_pp: -1.0
+  firing_rate_interval: [0.005, 0.30]
+
+frozen_inputs:
+  decoder_training_snapshot: v8_atc_sequence_b68ae19b65e9
+  atcnet_and_fbcnet_predictions: fold_local_session_t_oof
+  decoder_training_budget_changed: false
+
+data_access:
+  allowed_session: T
+  heldout_session_e_accessed: false
+  openbmi_session_s2_accessed: false

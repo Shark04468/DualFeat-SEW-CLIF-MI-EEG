@@ -1,0 +1,37 @@
+experiment_id: v12_e12_distillation_objective
+stage: session_t_development
+subjects: [1, 3, 8]
+seeds: [0]
+folds: [0, 1, 2, 3, 4, 5]
+model_variant: interpolated_branch_kd
+objectives:
+  o0_current:
+    hard: 0.50
+    fused_kd: 0.35
+    branch_kd: 0.15
+  o1_fused_070:
+    hard: 0.30
+    fused_kd: 0.70
+    branch_kd: 0.00
+  o2_fused_080:
+    hard: 0.20
+    fused_kd: 0.80
+    branch_kd: 0.00
+  o3_light_branch:
+    hard: 0.30
+    fused_kd: 0.60
+    branch_kd: 0.10
+controls:
+  optimizer: reuse_v12_1_fold_selection
+  epoch: reuse_v12_1_fold_selection
+  initialization: matched_per_fold
+  batch_order: matched_per_fold
+  o0_reference_replay_required: true
+promotion:
+  minimum_mean_gain_over_v9_pp: 0.5
+  minimum_positive_subjects: 2
+  maximum_subject_regression_pp: 1.0
+  minimum_teacher_gap_recovery: 0.40
+locked_data:
+  bci2a_session_e: true
+  openbmi_session_s2: true

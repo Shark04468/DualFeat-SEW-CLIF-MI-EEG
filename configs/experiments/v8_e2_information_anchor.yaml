@@ -1,0 +1,78 @@
+experiment_id: V8_E2_INFORMATION_ANCHOR
+protocol: bci2a_session_t_nested_six_fold_oof
+architecture_version: dpc_snn_v8_information_anchor_r1
+schema_version: 1
+stage: development
+
+subjects: [1, 3, 8]
+screening_seed: 0
+confirmation_top_k: 1
+confirmation_seeds: [0]
+required_confirmation_variants: [carrier_linear_ann]
+
+variants:
+  carrier_linear_ann:
+    use_statistical_branch: true
+    use_covariance_branch: false
+    use_temporal_branch: false
+    decoder_kind: ann
+    delay_auxiliary_enabled: false
+
+selection:
+  session: T
+  method: nested_six_fold_run_grouped_oof
+  n_splits: 6
+  split_seed: 0
+  max_epochs: 200
+  patience: 30
+  minimum_epochs: 30
+  minimum_outer_retrain_epochs: 30
+  checkpoint_metric: validation_kappa
+  ranking_metric: macro_subject_oof_accuracy
+
+training:
+  batch_size: 16
+  gradient_accumulation_steps: 1
+  effective_batch_size: 16
+  learning_rate: 0.001
+  weight_decay: 0.001
+  max_gradient_norm: 5.0
+  warmup_fraction: 0.05
+  endpoint_weights: [0.0, 0.0, 0.0, 0.0]
+  endpoint_loss_weight: 0.0
+  firing_rate_weight: 0.0
+  spatial_orthogonality_weight: 0.0
+  statistical_orthogonality_weight: 0.0
+  label_smoothing: 0.0
+
+augmentation:
+  enabled: false
+  parent_scope: current_inner_or_outer_train_batch_only
+  segments: 8
+  probability: 0.0
+  carrier_scale_range: [1.0, 1.0]
+
+preprocessing:
+  session: T
+  reference: CAR
+  baseline_interval_seconds: [-1.0, 0.0]
+  task_interval_seconds: [0.0, 4.0]
+  filterbank: fixed_causal_analytic_12_band
+  physical_basis: frozen_exact_22_sensor_basis
+  gain: fold_train_inverse_physical_carrier_rms
+  cache_boundary: unit_gain_physical_fast_and_gain_invariant_relative_envelope_rates
+  cache_gain_relative_tolerance: 1.0e-6
+  fast_rate_hz: 125.0
+  slow_rate_hz: 62.5
+  cache_slow_gain_invariance_tolerance: 1.0e-5
+
+data_access:
+  allowed_session: T
+  heldout_session_e_accessed: false
+  openbmi_session_s2_accessed: false
+
+gate:
+  diagnostic_reference: fixed_l2_logistic_carrier_probe
+  expected_macro_accuracy: 0.7199
+  maximum_recovery_gap_pp: 2.0
+  session_e_accessed: false

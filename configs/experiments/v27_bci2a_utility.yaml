@@ -1,0 +1,33 @@
+experiment_id: V27_FROZEN_V25_BCI2A_UTILITY
+schema: dpc-snn-v27-utility/v1
+protocol: frozen_v25_session_e_posthoc_utility_without_model_updates
+
+early_decision:
+  endpoints_seconds: [0.5, 1.0, 2.0, 3.0, 4.0]
+  truncation: zero_future_task_carrier_before_feature_extraction
+
+robustness:
+  gaussian_snr_db: [20.0, 10.0, 5.0]
+  channel_drop_counts: [1, 3, 5]
+  time_mask_seconds: [0.1, 0.25, 0.5]
+  amplitude_scales: [0.7, 1.3]
+  perturbation_seed_is_subject_seed_condition_locked: true
+
+operation_proxy:
+  report_decoder_only: true
+  report_full_student_including_analog_fusion: true
+  shared_atc_fbc_frontends_excluded: true
+  hardware_energy_claim_allowed: false
+
+gate:
+  clean_replay_required: true
+  minimum_early_auc_gain_pp: 0.5
+  minimum_robustness_gain_pp: 0.5
+  minimum_decoder_operation_reduction: 0.5
+  minimum_full_student_operation_reduction: 0.2
+  at_least_one_utility_win_required: true
+
+data_access:
+  session_e_model_updates: false
+  session_e_checkpoint_selection: false
+  historical_session_e_exposure: true

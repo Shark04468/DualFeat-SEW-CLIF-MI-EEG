@@ -1,0 +1,31 @@
+experiment_id: V29_OPENBMI_MATCHED_SNN_REPLICATION
+schema: dpc-snn-v29-openbmi-replication/v1
+status: retrospective_external_replication_after_historical_s2_exposure
+protocol: openbmi_s1_train_checkpoint_barrier_then_s2_evaluate
+subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+  19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+  37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
+seeds: [0, 1, 2, 3, 4]
+variants: [ann_sew_ce, sew_clif_ce]
+fixed_epochs: 80
+batch_size: 48
+learning_rate: 0.001
+weight_decay: 0.001
+firing_rate_weight: 0.01
+model:
+  n_classes: 2
+  hidden_channels: 64
+  decoder_layers: 2
+  readout_features: 96
+  dropout: 0.25
+selection:
+  source: frozen_BCI2a_E28_architecture_and_predeclared_fixed_schedule
+  openbmi_s2_used_for_selection: false
+historical_exposure:
+  openbmi_s2_previously_accessed_by_older_project_versions: true
+  interpretation: retrospective_external_replication_not_project_level_blind_confirmation
+gate:
+  mean_subject_gain_pp_minimum: 0.5
+  positive_subjects_minimum: 34
+  one_sided_wilcoxon_maximum: 0.05
+  mean_snn_minus_ann_noninferiority_pp: 0.0

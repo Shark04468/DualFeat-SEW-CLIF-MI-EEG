@@ -1,0 +1,39 @@
+experiment_id: V8_E6_FROZEN_ENSEMBLE_BCI2A_T_TO_E
+schema: dpc-snn-v8-e6-ensemble/v1
+stage: bci2a_evaluation
+protocol: bci2a_session_t_train_session_e_single_evaluation
+subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds: [0, 1, 2, 3, 4]
+
+training:
+  train_session: T
+  retrain_on_all_session_t: true
+  fixed_epoch_only: true
+  session_e_checkpoint_selection: false
+  session_e_gradient_updates: false
+
+evaluation:
+  session: E
+  evaluate_once_per_subject_seed: true
+  save_trial_logits_probabilities_predictions: true
+  save_component_and_matched_ann_predictions: true
+  state_must_not_change_during_evaluation: true
+  primary_model: entropy_residual_sew_clif
+
+execution:
+  maximum_parallel_subject_workers: 2
+  default_parallel_subject_workers: 1
+  worker_threads: 8
+
+data_access:
+  allowed_training_session: T
+  allowed_evaluation_session: E
+  openbmi_session_s2_accessed: false
+  requires_validated_pre_e6_freeze: true
+
+analysis:
+  primary_metric: subject_macro_accuracy
+  subject_is_inferential_unit: true
+  seeds_are_paired_optimization_repeats: true
+  pooled_trial_tests_are_diagnostic_only: true
+  post_session_e_tuning_allowed: false

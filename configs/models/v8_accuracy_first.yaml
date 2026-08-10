@@ -1,0 +1,85 @@
+name: v8_accuracy_first
+architecture_version: dpc_snn_v8_accuracy_first_r4_gain_invariant_envelope
+
+n_channels: 22
+n_classes: 4
+n_bands: 12
+n_latent_nodes: 16
+channel_names:
+  - Fz
+  - FC3
+  - FC1
+  - FCz
+  - FC2
+  - FC4
+  - C5
+  - C3
+  - C1
+  - Cz
+  - C2
+  - C4
+  - C6
+  - CP3
+  - CP1
+  - CPz
+  - CP2
+  - CP4
+  - P1
+  - Pz
+  - P2
+  - POz
+band_edges_hz:
+  - [6, 8]
+  - [8, 10]
+  - [10, 12]
+  - [12, 14]
+  - [14, 17]
+  - [17, 20]
+  - [20, 23]
+  - [23, 26]
+  - [26, 30]
+  - [30, 34]
+  - [34, 37]
+  - [37, 40]
+
+sfreq: 250.0
+epoch_tmin: -1.0
+task_tmin: 0.0
+task_tmax: 4.0
+analytic_taps: 129
+envelope_taps: 33
+fast_decimation: 2
+
+spatial_rank: 4
+statistical_spatial_filters: 8
+statistical_features: 96
+statistical_segments: 4
+covariance_features_per_band: 4
+use_statistical_branch: true
+use_covariance_branch: true
+use_temporal_branch: true
+delay_auxiliary_enabled: false
+delay_maximum_routes: 256
+delay_maximum_samples: 8
+delay_allow_cross_band: false
+delay_signal_mode: fast_phase
+delay_contextual_residual_enabled: false
+delay_contextual_residual_bound: 0.5
+delay_phase_residual_enabled: false
+delay_phase_residual_bound: 0.25
+delay_fusion_bound: 0.25
+delay_fusion_initial: 0.05
+
+temporal_dilations: [1, 2, 4, 8]
+temporal_depth: 2
+temporal_scale_attention: true
+
+decoder_kind: ann
+decoder_residual_mode: sew_add
+decoder_layers: 2
+decoder_channels: 64
+decoder_decays: [0.65, 0.90, 0.975]
+endpoint_seconds: [0.5, 1.0, 2.0, 4.0]
+fusion_features: 128
+dropout: 0.25
+parameter_ceiling: 300000

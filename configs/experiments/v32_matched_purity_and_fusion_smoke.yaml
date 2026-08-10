@@ -1,0 +1,30 @@
+experiment_id: V32_MATCHED_PURITY_AND_FUSION_SMOKE
+schema: dpc-snn-v32-matched-purity-fusion/v1
+status: implementation_smoke_only
+parent_evidence: E28_full_9x3_8fe5f147e7ce
+
+dataset:
+  name: BCI Competition IV Dataset 2a
+  session: T
+  subjects: [1]
+  seeds: [0]
+  folds: [0]
+
+training:
+  variant: sew_clif_ce
+  firing_rate_weight: 0.0
+  epochs: 2
+  patience: 2
+  minimum_outer_epochs: 2
+  batch_size: 48
+  learning_rate: 0.001
+  weight_decay: 0.001
+
+model:
+  n_classes: 4
+  hidden_channels: 64
+  decoder_layers: 2
+  readout_features: 96
+  dropout: 0.25
+  fusion_mode: interaction
+

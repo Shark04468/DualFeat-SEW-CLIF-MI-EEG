@@ -1,0 +1,73 @@
+name: v8_accuracy_first
+architecture_version: dpc_snn_v8_information_anchor_r1
+
+n_channels: 22
+n_classes: 4
+n_bands: 12
+n_latent_nodes: 16
+channel_names:
+  - Fz
+  - FC3
+  - FC1
+  - FCz
+  - FC2
+  - FC4
+  - C5
+  - C3
+  - C1
+  - Cz
+  - C2
+  - C4
+  - C6
+  - CP3
+  - CP1
+  - CPz
+  - CP2
+  - CP4
+  - P1
+  - Pz
+  - P2
+  - POz
+band_edges_hz:
+  - [6, 8]
+  - [8, 10]
+  - [10, 12]
+  - [12, 14]
+  - [14, 17]
+  - [17, 20]
+  - [20, 23]
+  - [23, 26]
+  - [26, 30]
+  - [30, 34]
+  - [34, 37]
+  - [37, 40]
+
+sfreq: 250.0
+epoch_tmin: -1.0
+task_tmin: 0.0
+task_tmax: 4.0
+analytic_taps: 129
+envelope_taps: 33
+fast_decimation: 2
+endpoint_seconds: [0.5, 1.0, 2.0, 4.0]
+
+spatial_rank: 4
+statistical_spatial_filters: 22
+statistical_features: 1056
+statistical_segments: 4
+statistical_components: [carrier_log_variance]
+statistical_encoder_kind: fbc
+statistical_variance_transform: log
+statistical_post_spatial_activation: none
+statistical_spatial_initialization: identity
+statistical_spatial_trainable: false
+covariance_features_per_band: 4
+use_statistical_branch: true
+use_covariance_branch: false
+use_temporal_branch: false
+
+delay_auxiliary_enabled: false
+fusion_kind: linear
+fusion_features: 128
+dropout: 0.0
+parameter_ceiling: 30000

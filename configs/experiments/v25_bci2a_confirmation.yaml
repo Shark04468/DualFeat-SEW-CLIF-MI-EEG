@@ -1,0 +1,30 @@
+experiment_id: V25_LOCKED_BCI2A_CROSS_SESSION
+protocol: subject_dependent_bci2a_session_t_train_session_e_evaluate
+stage: retrospective_locked_cross_session_evaluation
+subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds: [0, 1, 2, 3, 4]
+variants: [ann_plain_ce, sew_clif_ce]
+
+selection:
+  source: Session-T nested six-fold OOF only
+  fixed_epoch_rule: subject-seed upper median of six selected epochs
+  residual_scale_rule: subject-seed mean validation kappa, then accuracy, then smaller scale
+  residual_scale_candidates: [0.0, 0.25, 0.5, 1.0]
+
+execution:
+  phase_1: train and hash all 45 Session-T checkpoint bundles
+  global_checkpoint_barrier: required
+  phase_2: evaluate all frozen bundles on Session E
+  session_e_checkpoint_selection: false
+  session_e_gradient_updates: false
+  save_per_trial_predictions: true
+
+comparisons:
+  primary: sew_clif_ce_vs_ann_plain_ce
+  secondary: [sew_clif_ce_vs_teacher, sew_clif_ce_vs_atcnet, sew_clif_ce_vs_fbcnet]
+  inferential_unit: subject after averaging seeds
+
+historical_data_exposure:
+  bci2a_session_e: true
+  openbmi_session_s2: true
+  claim_boundary: not_project_level_blind_confirmation

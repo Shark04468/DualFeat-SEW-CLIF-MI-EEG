@@ -1,0 +1,83 @@
+defaults:
+  seed: 0
+  seeds: [0, 1, 2]
+  device: cuda
+  output_root: runs
+  training:
+    epochs: 20
+    delay_pretrain_epochs: 12
+    delay_pretrain_lr: 0.005
+    representation_warmup_epochs: 6
+    batch_size: 16
+    gradient_accumulation_steps: 2
+    tet_loss_weight: 0.2
+    temporal_consistency_temperature: 2.0
+    lr: 0.001
+    weight_decay: 0.0001
+    patience: 20
+    num_workers: 0
+  dataset:
+    name: synthetic_delay_phase
+    n_trials: 192
+    n_channels: 8
+    n_time: 128
+    n_classes: 4
+    sfreq: 250
+    max_delay: 12
+    noise_std: 0.35
+    style_std: 0.15
+    phase_jitter: 0.25
+    carrier_frequencies_hz: [10.0, 18.0]
+  model:
+    dpc_snn_config: configs/models/dpc_snn.yaml
+    model: dpc_snn
+    architecture_version: dpc_snn_v3_6_identifiable_delay_evidence
+    n_classes: 4
+    n_channels: 8
+    hidden_channels: 24
+    snn_channels: 16
+    graph_rate_hz: 125.0
+    timesteps: 64
+    graph_timesteps: 64
+    preserve_graph_rate: true
+    temporal_pool_bins: 64
+    temporal_pool_channels: 4
+    d_max: 8
+    slow_d_max: 8
+    slow_downsample: 4
+    graph_sparsity: 0.2
+    route_rank: 4
+    n_delay_experts: 4
+    delay_expert_topk: 2
+    decoder_layers: 3
+    tet_scales: [8, 16, 32, 64]
+    delay_temperature: 0.75
+    min_delay_temperature: 0.2
+    delay_lr_multiplier: 0.25
+    use_cross_band_routes: true
+    current_gain: 0.5
+    use_membrane_readout: true
+    regularization:
+      spike_rate: 1.0
+      graph_l1: 0.0001
+      delay_entropy: 0.0001
+      delay_gate_structure: 0.01
+      spatial_orthogonal: 0.001
+      graph_prior: 0.0001
+      delay_alignment: 0.05
+      delay_anchor_kl: 0.1
+      expert_balance: 0.1
+      expert_diversity: 0.01
+experiments:
+  E1:
+    name: synthetic_delay_phase_recovery
+    runner: synthetic_recovery
+    priority: must
+  E2:
+    name: source_to_scalp_mixing_common_source
+    runner: scalp_mixing
+    priority: must
+  E3:
+    name: phase_surrogate_negative_controls
+    runner: negative_controls
+    priority: must

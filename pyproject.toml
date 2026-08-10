@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dpc-snn-mi-bci"
+version = "0.1.0"
+description = "Delay-Phase Coupled Spiking Graph Network experiments for MI-BCI"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26,<2.4",
+  "pandas>=2.0,<3.1",
+  "pyyaml>=6.0,<7"
+]
+
+[project.optional-dependencies]
+train = [
+  "torch>=2.2,<2.9",
+  "scipy>=1.11,<1.19",
+  "scikit-learn>=1.4,<2",
+  "matplotlib>=3.8,<3.11",
+  "statsmodels>=0.14,<0.15",
+  "pyriemann>=0.6,<0.13",
+  "einops>=0.7,<0.9"
+]
+eeg = [
+  "mne>=1.6,<1.13",
+  "moabb>=1.1,<1.6"
+]
+all = [
+  "torch>=2.2,<2.9",
+  "scipy>=1.11,<1.19",
+  "scikit-learn>=1.4,<2",
+  "matplotlib>=3.8,<3.11",
+  "statsmodels>=0.14,<0.15",
+  "pyriemann>=0.6,<0.13",
+  "mne>=1.6,<1.13",
+  "moabb>=1.1,<1.6",
+  "einops>=0.7,<0.9"
+]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.6"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint.per-file-ignores]
+# CLI entry points and tests deliberately add the local src tree before
+# importing the package, so their imports cannot be physically moved upward.
+"scripts/*.py" = ["E402"]
+"tests/*.py" = ["E402"]

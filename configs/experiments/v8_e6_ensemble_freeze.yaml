@@ -1,0 +1,110 @@
+experiment_id: V8_E6_ENSEMBLE_PRE_E_FREEZE
+schema: dpc-snn-v8-ensemble-freeze-config/v1
+stage: pre_E6_architecture_freeze
+protocol: bci2a_session_t_train_session_e_single_evaluation
+
+selected_branch: confirmed_e4_sequence_residual
+selection_basis:
+  delay_prior_feasibility_passed: false
+  passing_subjects: [1]
+  failing_subjects: [3, 8]
+  e5_formal_hpo_completed: false
+  delay_branch_promoted: false
+  e4_fallback_gate_passed: true
+  e4_confirmation_subjects: [1, 3, 8]
+  e4_confirmation_seeds: [1, 2]
+  e4_confirmation_pairs: 6
+  e4_snn_macro_accuracy: 0.890625
+  e4_ann_macro_accuracy: 0.8871527777777778
+  e4_anchor_macro_accuracy: 0.8871527777777778
+  e4_snn_minus_ann_pp: 0.3472222222222222
+  e4_snn_minus_anchor_pp: 0.3472222222222222
+  e4_positive_pairs: 4
+  provenance_status: original_hash_verified_development_artifacts
+  raw_development_fold_artifacts_available_on_current_instance: true
+
+architecture:
+  anchor:
+    components: [atcnet, fbcnet]
+    probability_weights: [0.5, 0.5]
+  atc_sequence:
+    source: official_atcnet_post_convolution_sequence
+    shape: [18, 32]
+  primary_decoder: sew_clif
+  matched_ann_decoder: ann_sew
+  decoder:
+    hidden_channels: 64
+    layers: 2
+    readout_features: 96
+    dropout: 0.25
+    distillation_weight: 0.35
+    distillation_temperature: 2.0
+    firing_rate_weight: 0.02
+  residual_fusion:
+    mode: anchor_entropy
+    maximum_decoder_weight: 0.05
+    equation: p_final=(1-g)*p_anchor+g*p_decoder;g=0.05*H(p_anchor)/log(4)
+    learned_calibration: false
+  delay:
+    enabled: false
+    mode: "off"
+    status: failed_development_prerequisite_retained_as_future_ablation_only
+
+checkpoint_rule:
+  selection_data: BCI2a Session T development only
+  atcnet_final_epoch: 79
+  atcnet_scheduler_horizon: 300
+  fbcnet_final_epoch: 70
+  fbcnet_scheduler_horizon: 300
+  decoder_final_epoch: 20
+  decoder_scheduler_horizon: 120
+  heldout_checkpoint_selection: false
+
+preprocessing:
+  reference: CAR
+  baseline_interval_seconds: [-1.0, 0.0]
+  task_interval_seconds: [0.0, 4.0]
+  gain: all_session_t_channel_rms
+  clip_after_gain: 12.0
+  fbcnet_filterbank_hz:
+    - [4, 8]
+    - [8, 12]
+    - [12, 16]
+    - [16, 20]
+    - [20, 24]
+    - [24, 28]
+    - [28, 32]
+    - [32, 36]
+    - [36, 40]
+
+augmentation:
+  enabled: true
+  parent_scope: current_session_t_training_batch_only
+  segments: 8
+  probability: 0.5
+  noise_std: 0.01
+  scale_range: [0.9, 1.1]
+
+analysis_plan:
+  primary_metric: subject_macro_accuracy
+  subject_is_inferential_unit: true
+  average_seeds_within_subject_first: true
+  paired_subject_bootstrap_repeats: 10000
+  exact_paired_sign_flip: true
+  post_E_tuning_allowed: false
+  primary_comparisons:
+    - ensemble_snn_minus_atcnet
+    - ensemble_snn_minus_fbcnet
+    - ensemble_snn_minus_anchor
+    - ensemble_snn_minus_matched_ann
+
+required_e4_report_fragments:
+  - "SEW-CLIF residual macro accuracy | 89.06%"
+  - "Matched ANN-SEW residual macro accuracy | 88.72%"
+  - "ATCNet plus FBCNet anchor macro accuracy | 88.72%"
+  - "Positive subject-seed pairs | 4/6"
+  - "466a5a48fe744b7438d358d4b4f1c7bcfe3239aea3b82d2f476c162728ad63db"
+
+data_access:
+  bci2a_session_e_accessed_before_freeze: false
+  openbmi_session_s2_accessed_before_freeze: false

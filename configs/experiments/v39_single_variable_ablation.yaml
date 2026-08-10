@@ -1,0 +1,37 @@
+experiment_id: V39_SINGLE_VARIABLE_ABLATION
+protocol: session_T_inner_validation_only
+stages:
+  - name: baseline_physical
+    fixed_delay_steps: 1.0
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 1
+  - name: fixed_audited_delay
+    fixed_delay_steps: null
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 1
+  - name: learned_hurdle
+    fixed_delay_steps: null
+    freeze_delay_posterior: false
+    use_cross_band_routes: false
+    decoder_layers: 1
+  - name: pair_cross_band
+    fixed_delay_steps: null
+    freeze_delay_posterior: false
+    use_cross_band_routes: true
+    decoder_layers: 1
+  - name: causal_clif_sew
+    fixed_delay_steps: null
+    freeze_delay_posterior: false
+    use_cross_band_routes: true
+    decoder_layers: 3
+non_negotiable:
+  baseline_tmin: -1.0
+  physical_reference: csd
+  euclidean_alignment: false
+  fold_local_evidence_prior: true
+  cumulative_readout_seconds: []
+  tet_loss_weight: 0.0
+  minimum_lag_anneal_joint_epochs: 10
+  heldout_session_E_accessed: false

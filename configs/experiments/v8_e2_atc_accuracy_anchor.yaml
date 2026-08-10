@@ -1,0 +1,25 @@
+experiment_id: V8_E2_ATC_ACCURACY_ANCHOR
+protocol: bci2a_session_t_nested_six_fold_oof
+architecture_version: dpc_snn_v8_atc_accuracy_anchor_r1
+schema_version: 1
+stage: development
+
+subjects: [1, 3, 8]
+seeds: [0]
+
+source:
+  stage: E1
+  model: atcnet
+  implementation_id: tcformer_official_atcnet
+  reuse_policy: exact_same_model_preprocessing_split_seed_and_oof_predictions
+
+data_access:
+  allowed_session: T
+  heldout_session_e_accessed: false
+  openbmi_session_s2_accessed: false
+
+gate:
+  baseline_stage: E1
+  maximum_gap_pp: 0.5
+  aggregation: subject_macro_mean
+  pass_rule: atc_anchor_at_least_strongest_e1_baseline_minus_gap

@@ -1,0 +1,82 @@
+experiment_id: V40_DELAY_GATE
+protocol: repeated_session_T_paired_delay_gate
+
+transport_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 12.0]
+  - [12.0, 14.0]
+  - [14.0, 17.0]
+  - [17.0, 20.0]
+  - [20.0, 23.0]
+  - [23.0, 26.0]
+  - [26.0, 30.0]
+  - [30.0, 34.0]
+  - [34.0, 37.0]
+  - [37.0, 40.0]
+
+classification_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 13.0]
+  - [13.0, 18.0]
+  - [18.0, 24.0]
+  - [24.0, 30.0]
+  - [30.0, 40.0]
+
+paired_gate_variants:
+  - name: matched_zero_delay
+    fixed_delay_steps: 0.0
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 1
+  - name: fixed_audited_delay
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 1
+
+five_stages:
+  - name: matched_zero_delay
+    fixed_delay_steps: 0.0
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 1
+  - name: fixed_audited_delay
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 1
+  - name: learned_hurdle
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: false
+    use_cross_band_routes: false
+    decoder_layers: 1
+  - name: pair_cross_band
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: false
+    use_cross_band_routes: true
+    decoder_layers: 1
+  - name: canonical_clif_sew_2layer
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: false
+    use_cross_band_routes: true
+    decoder_layers: 2
+
+non_negotiable:
+  baseline_tmin: -1.0
+  delay_evidence_reference: csd
+  euclidean_alignment: false
+  fold_local_evidence_prior: true
+  reference_augmentation_prob: 0.0
+  cumulative_readout_seconds: []
+  tet_loss_weight: 0.0
+  select_last_checkpoint: true
+  heldout_session_E_accessed: false

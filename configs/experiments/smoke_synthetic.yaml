@@ -1,0 +1,33 @@
+defaults:
+  seed: 0
+  device: cpu
+  output_root: runs
+  training:
+    epochs: 2
+    delay_pretrain_epochs: 5
+    delay_pretrain_lr: 0.005
+    batch_size: 16
+    lr: 0.001
+    weight_decay: 0.0001
+    num_workers: 0
+  dataset:
+    name: synthetic_delay_phase
+    n_trials: 96
+    n_channels: 8
+    n_time: 128
+    n_classes: 4
+    max_delay: 8
+    noise_std: 0.4
+  model:
+    model: dpc_snn
+    n_classes: 4
+    n_channels: 8
+    n_bands: 2
+    hidden_channels: 12
+    timesteps: 8
+    d_max: 8
+experiments:
+  E1:
+    name: synthetic_delay_phase_recovery
+    runner: synthetic_recovery
+    priority: must

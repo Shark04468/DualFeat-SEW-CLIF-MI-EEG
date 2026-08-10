@@ -1,0 +1,30 @@
+experiment_id: E29Z_OPENBMI_OBJECTIVE_PURE_REPLICATION
+schema: dpc-snn-e29zp-openbmi/v1
+status: registered_before_training_after_historical_s2_exposure
+parent_run_id: E29_s1_to_s2_4400c0dfbed7
+protocol: openbmi_s1_train_checkpoint_barrier_then_s2_evaluate
+subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+  19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+  37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
+seeds: [0, 1, 2, 3, 4]
+training:
+  fixed_epochs: 80
+  batch_size: 48
+  learning_rate: 0.001
+  weight_decay: 0.001
+  firing_rate_weight: 0.0
+model:
+  n_classes: 2
+  hidden_channels: 64
+  decoder_layers: 2
+  readout_features: 96
+  dropout: 0.25
+comparability:
+  parent_ann_predictions_read_only: true
+  parent_standardizer_read_only: true
+  frozen_teacher_checkpoints_unchanged: true
+  same_initialisation_seed: true
+historical_exposure:
+  openbmi_s2_previously_accessed_by_project: true
+  interpretation: retrospective_objective_pure_replication
+

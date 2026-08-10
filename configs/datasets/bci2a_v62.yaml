@@ -1,0 +1,28 @@
+name: bci2a_v62
+kind: processed_npz
+root: data/processed/bci2a_v62
+sfreq: 250
+n_channels: 22
+n_classes: 4
+eeg_channels_only: true
+sessions: ["T", "E"]
+subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+required_trial_metadata:
+  - subject
+  - session
+  - run
+  - trial_id
+epoch:
+  tmin: -1.0
+  tmax: 4.0
+selection:
+  session: T
+  splitter: run_grouped
+  n_splits: 6
+evaluation:
+  session: E
+  model_selection_allowed: false
+preprocess:
+  reference: car
+  standardize: inner_train_fixed_gain
+  artifact_policy: record_and_configure

@@ -1,0 +1,176 @@
+defaults:
+  seed: 0
+  seeds: [0, 1, 2, 3, 4]
+  device: cuda_if_available
+  output_root: runs
+  training:
+    epochs: 150
+    delay_pretrain_epochs: 15
+    delay_pretrain_lr: 0.005
+    representation_warmup_epochs: 10
+    batch_size: 4
+    gradient_accumulation_steps: 8
+    tet_loss_weight: 0.0
+    minimum_lag_anneal_joint_epochs: 10
+    temporal_consistency_temperature: 2.0
+    lr: 0.001
+    weight_decay: 0.0001
+    patience: 30
+    num_workers: 0
+    calibration_epochs: 20
+    calibration_lr: 0.0005
+    calibration_freeze_batchnorm: true
+    unlabeled_epochs: 15
+    unlabeled_lr: 0.0002
+    pseudo_label_threshold: 0.75
+    consistency_noise_std: 0.03
+  metrics:
+    primary: [accuracy, kappa, macro_f1]
+    subject_level_first: true
+  async:
+    window_sec: 1.0
+    step_sec: 0.25
+  latency:
+    # All eligible E14 DPC-SNN checkpoints are measured unless an explicit
+    # per-run cap is supplied for a smoke test.
+    checkpoint_experiment: E14
+    repeat: 10
+  data:
+    bci2a_config: configs/datasets/bci2a.yaml
+    synthetic_config: configs/datasets/synthetic_delay_phase.yaml
+    physionet_config: configs/datasets/physionet_eegmmi.yaml
+    moabb_config: configs/datasets/moabb_mini.yaml
+  model:
+    dpc_snn_config: configs/models/dpc_snn.yaml
+    baselines_config: configs/models/baselines.yaml
+  few_shot:
+    models: [dpc_snn, eegnet]
+    calibration_ks: [1, 5, 10, 20, 50]
+    # Independent target-session T label draws; session E remains untouched.
+    draw_seeds: [0, 1, 2, 3, 4]
+experiments:
+  E0:
+    name: environment_data_reproducibility
+    runner: environment_audit
+    priority: must
+    outputs: [dataset_manifest.json, preprocess_check.csv, seed_config.yaml, environment.yaml]
+  E1:
+    name: synthetic_delay_phase_recovery
+    runner: synthetic_recovery
+    priority: must
+    outputs: [synthetic_results.csv, delay_gt.npy, delay_gt_global.npy, delay_learned.npy, delay_corr.csv, delay_evaluation_contract.json]
+  E2:
+    name: source_to_scalp_mixing_common_source
+    runner: scalp_mixing
+    priority: must
+    outputs: [mixing_matrix.npy, source_delay_gt.npy, scalp_delay_learned.npy, common_source_control.csv]
+  E3:
+    name: phase_surrogate_negative_controls
+    runner: negative_controls
+    priority: must
+    outputs: [phase_surrogate_results.csv, label_shuffle_results.csv, time_reversal_results.csv]
+  E4:
+    name: preprocessing_spike_encoder_sanity
+    runner: preprocessing_qc
+    priority: must
+    outputs: [spike_raster.csv, phase_encoder_debug.csv, preprocess_qc.csv]
+  E5:
+    name: bci2a_subject_dependent
+    runner: bci2a_subject_dependent
+    priority: must
+    outputs: [main_bci2a_subject_dependent.csv, confusion_matrices.npy]
+  E6:
+    name: bci2a_cross_session
+    runner: bci2a_cross_session
+    priority: must
+    outputs: [cross_session_results.csv, session_gap.csv]
+  E7:
+    name: bci2a_loso
+    runner: bci2a_loso
+    priority: must
+    outputs: [loso_results.csv, target_subject_breakdown.csv]
+  E8:
+    name: supervised_few_shot_calibration
+    runner: few_shot_calibration
+    priority: must
+    outputs: [few_shot_results.csv, calibration_param_count.csv]
+  E9:
+    name: unlabeled_weak_label_calibration
+    runner: unlabeled_adaptation
+    priority: strong
+    outputs: [unlabeled_adaptation_results.csv, calibration_confidence.csv]
+  E10:
+    name: physionet_external_validation
+    runner: physionet_validation
+    priority: recommended
+    outputs: [physionet_results.csv, task_mapping.json]
+  E11:
+    name: moabb_mini_benchmark
+    runner: moabb_mini
+    priority: strong
+    outputs: [moabb_mini_results.csv, average_rank.csv, per_subject_best.csv]
+  E12:
+    name: cross_dataset_fewshot_transfer
+    runner: cross_dataset_fewshot
+    priority: optional
+    outputs: [cross_dataset_fewshot.csv]
+  E13:
+    name: asynchronous_bci_sliding_window
+    runner: asynchronous_bci
+    priority: strong
+    outputs: [async_detection_results.csv, sliding_window_predictions.csv]
+  E14:
+    name: baseline_fairness_audit
+    runner: baseline_fairness
+    priority: must
+    outputs: [baseline_audit.csv, hparam_trials.csv, hparam_budget.csv, runtime_summary.csv]
+  E15:
+    name: non_snn_mechanism_controls
+    runner: mechanism_controls
+    priority: must
+    outputs: [mechanism_controls.csv, matched_params.csv]
+  E16:
+    name: core_module_ablation
+    runner: ablation_core
+    priority: must
+    outputs: [ablation_core.csv]
+  E17:
+    name: sensitivity_hyperparameter_convergence
+    runner: sensitivity
+    priority: recommended
+    outputs: [sensitivity_dmax.csv, sensitivity_timesteps.csv, sensitivity_graph_rate.csv, band_ablation.csv]
+  E18:
+    name: neurophysiology_interpretation
+    runner: neurophysiology
+    priority: must
+    outputs: [erd_ers_topomap.csv, edge_importance.npy, delay_matrix.npy, connectivity_metrics.csv, model_interpretation_manifest.json]
+  E19:
+    name: explainability_sanity_edge_stability_occlusion
+    runner: explainability_sanity
+    priority: must
+    outputs: [explainability_sanity.csv, edge_stability.csv, occlusion_results.csv]
+  E20:
+    name: reference_volume_conduction_sensitivity
+    runner: reference_sensitivity
+    priority: must
+    outputs: [reference_sensitivity.csv, volume_conduction_checks.csv]
+  E21:
+    name: spike_efficiency_latency_resource
+    runner: efficiency_latency
+    priority: must
+    outputs: [spike_stats.csv, latency_cpu_gpu.csv, synops_proxy.csv, decision_auc.csv, latency_checkpoint_audit.csv]
+  E22:
+    name: real_eeg_artifact_robustness
+    runner: artifact_robustness
+    priority: strong
+    outputs: [artifact_robustness.csv, artifact_config.json]
+  E23:
+    name: low_channel_portable_bci
+    runner: low_channel
+    priority: strong
+    outputs: [low_channel_results.csv, channel_subset_config.json]
+  E24:
+    name: statistical_audit_failure_reproducibility
+    runner: final_statistics
+    priority: must
+    outputs: [stat_tests.csv, mixed_effects_results.csv, failure_cases.md, reproduce_all.sh, reproduce_all.ps1]

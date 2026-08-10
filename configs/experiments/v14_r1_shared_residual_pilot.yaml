@@ -1,0 +1,65 @@
+experiment_id: v14_r1_shared_residual
+stage: session_t_development
+dataset: bci2a_v62
+subjects: [1, 3, 8]
+seeds: [0]
+folds: [0, 1, 2, 3, 4, 5]
+anchor:
+  experiment: v9_e3_dual_feature_pilot
+  variant: sew_clif_kd
+  shared_parameters: 73348
+  replay_tolerance: 1.0e-6
+student:
+  shared_trunk: frozen_v9_sew_clif_kd
+  variants:
+    - r0_shared_replay
+    - r1_atc_residual
+    - r2_fbc_residual
+    - r3_dual_residual
+    - r4_generic_residual
+  expert_parameters:
+    r0_shared_replay: 73348
+    r1_atc_residual: 78332
+    r2_fbc_residual: 81404
+    r3_dual_residual: 86388
+    r4_generic_residual: 86384
+  residual_gates:
+    type: static_per_class
+    initial_value: 0.05
+    maximum_value: 0.5
+  classifier_bypass: false
+training:
+  residual_pretrain_epochs: 10
+  epochs: 100
+  patience: 20
+  minimum_outer_epochs: 20
+  batch_size: 48
+  optimizer: AdamW
+  learning_rates: [0.0003, 0.001]
+  weight_decay: 0.001
+  objective:
+    cross_entropy: 0.50
+    equal_teacher_kd: 0.35
+    centered_residual_regression: 0.15
+    firing_rate: 0.01
+selection:
+  data: session_t_inner_validation_only
+  primary_metric: kappa
+  tie_breakers: [accuracy, earliest_epoch]
+  total_trainable_configurations_per_fold: 8
+controls:
+  primary: r3_dual_residual
+  frozen_shared: r0_shared_replay
+  capacity_matched: r4_generic_residual
+locked_data:
+  bci2a_session_e: true
+  openbmi_session_s2: true
+promotion_gate:
+  primary_mean_gain_pp_min: 0.5
+  positive_subjects_min: 2
+  worst_subject_regression_pp_max: 1.0
+  teacher_gap_recovery_min: 0.40
+  gain_over_capacity_control_pp_min: 0.3
+  worst_class_regression_pp_max: 2.0
+  positive_net_rescue_required: true
+  learned_gate_above_initial_required: true

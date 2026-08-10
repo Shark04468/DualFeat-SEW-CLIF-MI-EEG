@@ -1,0 +1,67 @@
+name: cho2017_gigadb_mi
+kind: moabb_subject_stream
+dataset_class: Cho2017
+native_sfreq: 512.0
+evidence_sfreq: 512.0
+classifier_sfreq: 256.0
+tmin: 0.0
+tmax: 3.0
+events: [left_hand, right_hand]
+n_classes: 2
+session: S1
+subjects:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  - 27
+  - 28
+  - 29
+  - 30
+  - 31
+  - 32
+  - 33
+  - 34
+  - 35
+  - 36
+  - 37
+  - 38
+  - 39
+  - 40
+  - 41
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  - 47
+  - 48
+  - 49
+  - 50
+  - 51
+  - 52
+role: external_mechanism_replication_after_architecture_freeze
+evaluation: repeated_stratified_within_session_cv
+cache_policy: stream_one_subject_no_duplicate_npz

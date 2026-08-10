@@ -1,0 +1,64 @@
+experiment_id: V31_FROZEN_REPRESENTATION_DECODER_LEARNING_CURVE
+schema: dpc-snn-v31-decoder-learning-curve/v1
+status: retrospective_mechanism_isolation
+question: does_the_matched_snn_decoder_gain_decrease_as_labelled_examples_per_class_increase
+datasets:
+  bci2a:
+    subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    n_classes: 4
+    training_session: T
+    evaluation_session: E
+  openbmi:
+    subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+      19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+      37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
+    n_classes: 2
+    training_session: S1
+    evaluation_session: S2
+  bnci2014_004:
+    subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    n_classes: 2
+    training_sessions: [01T, 02T, 03T]
+    evaluation_sessions: [04E, 05E]
+seeds: [0, 1, 2]
+numeric_budgets_per_class: [25, 50, 100]
+include_all_available: true
+variants: [ann_sew_ce, sew_clif_ce]
+training:
+  fixed_epochs: 80
+  batch_size: 48
+  learning_rate: 0.001
+  weight_decay: 0.001
+  firing_rate_weight: 0.01
+model:
+  hidden_channels: 64
+  decoder_layers: 2
+  readout_features: 96
+  dropout: 0.25
+representation:
+  branches: [atcnet, fbcnet]
+  frozen_within_campaign: true
+  supervised_label_exposure: all_labels_from_the_training_session
+  interpretation: decoder_label_efficiency_only_not_end_to_end_sample_efficiency
+  gain_scope: full_training_session_unlabelled_statistics
+  feature_standardizer_scope: selected_label_budget_only
+controls:
+  nested_subsets_within_subject_seed: true
+  same_subset_for_ann_and_snn: true
+  same_initialisation_for_all_budgets_and_variants_within_subject_seed: true
+  same_fixed_epochs_for_all_budgets_and_variants: true
+  evaluation_gradient_updates: false
+  save_trial_predictions: true
+primary_analysis:
+  unit: subject_after_seed_averaging
+  response: sew_clif_accuracy_minus_ann_sew_accuracy
+  predictor: log_examples_per_class
+  dataset_fixed_effects: true
+  subject_cluster_bootstrap_repetitions: 10000
+  expected_direction: negative
+  pass_requires_upper_95_percent_bootstrap_bound_below_zero: true
+disclosure:
+  bci2a_session_e_historically_accessed: true
+  openbmi_session_s2_historically_accessed: true
+  bnci2014_004_04e_05e_accessed_in_e30: true
+  confirmatory_status: retrospective_not_blind

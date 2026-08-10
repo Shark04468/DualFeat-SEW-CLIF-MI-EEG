@@ -1,0 +1,72 @@
+experiment_id: V7_E3_R9_PHASE_PAIR_CURRENT
+protocol: bci2a_session_t_run_grouped_oof
+architecture_version: dasp_snn_v7_phase_pair_current_r9
+schema_version: 10
+stage: static_slow_within
+parent_config: configs/experiments/v7_e2_zero_scaffold_core_atc.yaml
+
+transport:
+  broadband_carrier: identity_d0_plus_zero_safe_audited_phase_pair_current
+  matched_zero_intervention: delay_posterior_only
+  readout: pre_decoder_audited_phase_pair_current_only
+
+model_overrides:
+  atc_delayed_statistics_uncertainty_gate: false
+  atc_delayed_statistics_cp_rank: 0
+  atc_delayed_statistics_bins: 0
+  atc_delayed_statistics_directional_moments: false
+  atc_delayed_route_statistics_cp_rank: 0
+  atc_delayed_route_statistics_bins: 0
+  phase_pair_current_enabled: true
+  phase_pair_current_bound: 0.25
+  phase_pair_initial_scale: 0.05
+
+subjects: [1]
+seeds: [0]
+selection_seed: 0
+selection:
+  session: T
+  method: six_fold_run_grouped
+  n_splits: 6
+  max_epochs: 20
+  patience: 20
+  minimum_epochs: 5
+
+training:
+  batch_size: 2
+  gradient_accumulation_steps: 4
+  effective_batch_size: 8
+  learning_rate: 0.0012
+  weight_decay: 0.001
+  beta1: 0.9
+  scheduler_warmup_epochs: 5
+  schedule: true
+  validation_interval: 5
+  train_readout: false
+  readout_training_scope: fixed_phase_adapter
+  initial_atc_residual_scale: 0.0
+  slow_carrier_residual_scale: 0.0
+  delayed_statistics_interaction_gain: 0.0
+  auxiliary_endpoint_weights: [0.0, 0.0, 0.0]
+
+augmentation:
+  enabled: false
+  reason: delay_trainable_stage_excludes_segment_reconstruction
+
+control:
+  primary: same_checkpoint_audited_delay_vs_matched_zero
+  state_mutation_allowed: false
+  amplitude_rms_tolerance_fraction: 0.05
+
+screen_gate:
+  subject: 1
+  seed: 0
+  fold: 0
+  fixed_epoch: 5
+  preserve_parent_accuracy: true
+  minimum_net_paired_corrections: 1
+
+gate:
+  median_delta_pp: 0.5
+  minimum_positive_pairs: 6
+  total_subject_seed_pairs: 9
