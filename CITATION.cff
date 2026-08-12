@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "Please cite the associated article, this software release, and the frozen evidence archive."
 title: "DualFeat-SEW-CLIF for motor-imagery EEG"
-version: "1.0.0"
-date-released: "2026-08-10"
+version: "1.0.1"
+date-released: "2026-08-12"
 type: software
 authors:
   - family-names: "Sha"
@@ -25,5 +25,5 @@ authors:
     given-names: "Dong"
     affiliation: "Shanghai Jiao Tong University Affiliated Sixth People's Hospital South Campus"
 repository-code: "https://github.com/Shark04468/DualFeat-SEW-CLIF-MI-EEG"
-url: "https://doi.org/10.5281/zenodo.21867114"
-doi: "10.5281/zenodo.21867114"
+url: "https://doi.org/10.5281/zenodo.21867113"
+doi: "10.5281/zenodo.21867113"

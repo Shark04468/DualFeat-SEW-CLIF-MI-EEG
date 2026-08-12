@@ -15,9 +15,15 @@ primary contribution.
 
 ## Frozen release
 
-- Source-code release: `v1.0.0`
-- Reproducibility evidence archive: `https://doi.org/10.5281/zenodo.21867114`
+- Source-code release: `v1.0.1`
+- Reproducibility archive (all versions): `https://doi.org/10.5281/zenodo.21867113`
+- Frozen v1.0.0 evidence: `https://doi.org/10.5281/zenodo.21867114`
 - Archive SHA-256: regenerated after the DOI and repository metadata are frozen
+
+Version `v1.0.1` is a source-maintenance patch. It adds manuscript/figure audit
+utilities, restores two historical launch helpers, and includes `manifest.json`
+in the V25 training-file integrity set. It does not change the frozen v1.0.0
+trial predictions, metrics, checkpoints, or scientific conclusions.
 
 The separate evidence archive contains resolved configurations, selected epoch
 records, trial-level predictions and logits, participant-level metrics,
@@ -93,4 +99,3 @@ earlier learned delay parameters.
 
 Citation metadata are provided in `CITATION.cff`. Cite both the associated
 article and the exact Zenodo version DOI for the frozen evidence archive.
-
