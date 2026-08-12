@@ -77,6 +77,7 @@ CHECKPOINT_FILES = {
     "sew_clif_ce": "sew_clif_ce.pt",
 }
 TRAIN_FILES = (
+    "manifest.json",
     "train_manifest.json",
     "run_fingerprint.json",
     "resolved_run.yaml",
