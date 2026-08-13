@@ -1,7 +1,7 @@
 {
   "title": "DualFeat-SEW-CLIF MI-EEG frozen reproducibility evidence archive",
   "upload_type": "software",
-  "description": "Source-maintenance patch for the frozen DualFeat-SEW-CLIF MI-EEG reproducibility release. Version 1.0.1 adds manuscript and figure audit utilities, restores historical launch helpers, and extends the V25 integrity manifest without changing frozen trial predictions, metrics, checkpoints, or scientific conclusions. Raw and processed EEG signals and feature caches remain excluded because of third-party dataset licensing.",
+  "description": "Submission-matched source-maintenance release for the frozen DualFeat-SEW-CLIF MI-EEG reproducibility archive. Version 1.0.1 adds manuscript and figure audit utilities, restores historical launch helpers, and extends the V25 integrity manifest without changing frozen trial predictions, metrics, checkpoints, or scientific conclusions. Raw and processed EEG signals and feature caches remain excluded because of third-party dataset licensing.",
   "creators": [
     {
       "name": "Sha, Yijun",
@@ -43,7 +43,12 @@
       "identifier": "https://github.com/Shark04468/DualFeat-SEW-CLIF-MI-EEG",
       "relation": "isSupplementTo",
       "scheme": "url"
+    },
+    {
+      "identifier": "https://doi.org/10.5281/zenodo.21867113",
+      "relation": "isVersionOf",
+      "scheme": "doi"
     }
   ],
-  "notes": "Maintenance update to the v1.0.0 frozen evidence archive. The v1.0.0 version DOI is 10.5281/zenodo.21867114; use the Zenodo concept record for the latest version."
+  "notes": "Version 1.0.1 is the submission-matched evidence archive (exact DOI: 10.5281/zenodo.21905851). Version 1.0.0 DOI: 10.5281/zenodo.21867114. Concept DOI for all versions: 10.5281/zenodo.21867113."
 }

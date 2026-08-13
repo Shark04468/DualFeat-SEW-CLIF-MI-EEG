@@ -3,8 +3,7 @@
 This repository contains the versioned source code, experiment configurations,
 tests, and analysis scripts associated with the manuscript:
 
-> Evidence for sample-regime-dependent benefits of structured spiking dynamics
-> in motor-imagery EEG decoding
+> Evidence for sample-regime-dependent benefits of complementary leaky integrate-and-fire temporal-state decoding in motor-imagery EEG
 
 The final paper evaluates a structured SEW-CLIF spiking decoder against a
 capacity-matched continuous ANN-SEW control using the same frozen ATCNet and
@@ -16,9 +15,10 @@ primary contribution.
 ## Frozen release
 
 - Source-code release: `v1.0.1`
-- Reproducibility archive (all versions): `https://doi.org/10.5281/zenodo.21867113`
+- Reproducibility archive (concept DOI; all versions): `https://doi.org/10.5281/zenodo.21867113`
 - Frozen v1.0.0 evidence: `https://doi.org/10.5281/zenodo.21867114`
-- Archive SHA-256: regenerated after the DOI and repository metadata are frozen
+- Submission-matched v1.0.1 evidence archive: `https://doi.org/10.5281/zenodo.21905851`
+- Archive SHA-256: see the SHA-256 manifest in the exact Zenodo version archive
 
 Version `v1.0.1` is a source-maintenance patch. It adds manuscript/figure audit
 utilities, restores two historical launch helpers, and includes `manifest.json`
