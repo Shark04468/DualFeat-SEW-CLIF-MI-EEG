@@ -1,6 +1,6 @@
 # v1.1.0 revision evidence
 
-See [the new revision archive](revisions/v1.1.0/README.md) and [release v1.1.0](https://github.com/Shark04468/DualFeat-SEW-CLIF-MI-EEG/releases/tag/v1.1.0). Historical root code and v1.0.1 are preserved. New formal trial-level classification predictions/logits are not included. Zenodo v1.1.0 deposition is pending; the old DOI does not identify these additions. Source: MIT; new results/descriptions: CC BY 4.0.
+See [the new revision archive](revisions/v1.1.0/README.md) and [release v1.1.0](https://github.com/Shark04468/DualFeat-SEW-CLIF-MI-EEG/releases/tag/v1.1.0). Historical root code and v1.0.1 are preserved. New formal trial-level classification predictions/logits are not included. Zenodo v1.1.0 is published at https://doi.org/10.5281/zenodo.22809543. Its ZIP was downloaded and verified byte-identical to the GitHub release asset. The frozen ZIP retains its original pre-deposition status note; this updated metadata provides the current citation. Source: MIT; new results/descriptions: CC BY 4.0.
 
 ---
 
