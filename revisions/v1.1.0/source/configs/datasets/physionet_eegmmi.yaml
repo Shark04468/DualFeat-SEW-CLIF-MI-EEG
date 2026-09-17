@@ -1,0 +1,16 @@
+name: physionet_eegmmi
+kind: mne_physionet
+root: data/raw/physionet_eegmmi
+processed_root: data/processed/physionet_eegmmi
+async_root: data/processed/async_physionet
+async_task: imagined_left_right
+sfreq: 160
+n_channels: 64
+protocols:
+  rest_vs_mi: true
+  left_right_imagery: true
+preprocess:
+  bands:
+    broad: [4.0, 40.0]
+    mu: [8.0, 13.0]
+    beta: [13.0, 30.0]

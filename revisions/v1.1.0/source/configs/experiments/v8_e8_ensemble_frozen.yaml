@@ -1,0 +1,47 @@
+experiment_id: V8_E8_FROZEN_ENSEMBLE_OPENBMI_CONFIRMATION
+schema: dpc-snn-v8-e8-ensemble/v1
+protocol: openbmi_s1_train_all_then_s2_single_evaluation
+stage: openbmi_confirmation
+seeds: [0, 1, 2, 3, 4]
+arms:
+  - primary
+  - matched_ann
+  - anchor
+  - atcnet
+  - fbcnet
+  - decoder_snn
+  - decoder_ann
+
+architecture_adaptation:
+  permitted_change: four_class_head_to_binary_head_only
+  source_classes: 4
+  target_classes: 2
+  target_sfreq: 250
+  channel_policy: frozen_22_sensor_basis_with_fixed_fcz_linear_interpolation
+  input_adapter:
+    policy: fixed_linear_missing_sensor_interpolation
+    derived_channels:
+      FCz:
+        source_channels: [FC1, FC2]
+        weights: [0.5, 0.5]
+  anti_aliasing: scipy_resample_poly_polyphase_FIR
+
+training:
+  train_session: S1
+  train_every_subject_seed_before_any_s2_semantic_load: true
+  fixed_component_epochs_from_bci2a_freeze: true
+  retrain_from_scratch: true
+  target_session_checkpoint_selection: false
+
+evaluation:
+  session: S2
+  evaluate_once_per_subject_seed: true
+  model_state_must_not_change: true
+  save_all_seven_prediction_arms: true
+
+analysis:
+  primary_metric: subject_macro_accuracy
+  subject_is_inferential_unit: true
+  seeds_are_paired_optimization_repeats: true
+  post_s2_tuning_allowed: false
+  pooled_trial_tests_are_diagnostic_only: true

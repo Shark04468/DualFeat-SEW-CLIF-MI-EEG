@@ -1,0 +1,33 @@
+experiment_id: V8_E3_DELAY_PRIOR_FEASIBILITY_GATE
+schema: dpc-snn-v8-e3-delay-prior-feasibility-gate/v1
+stage: development_prerequisite_audit
+protocol: bci2a_session_t_inner_train_fold_local_delay_evidence
+
+expected:
+  subjects: [1, 3, 8]
+  folds: [0]
+  scope: inner_training_fold_only
+  producer_source_tree_sha256: a0ab2a2b82da6c29d5f02b0ff54d666b42b3afa4e6254042578d5545dab4bafd
+  analytic_representation: v8_csd_unwhitened_var_innovations_fixed_anatomical_regions
+  ensemble_replicates: 5
+  require_all_subject_folds_pass: true
+
+stability_thresholds:
+  minimum_replicates: 5
+  minimum_pass_fraction: 0.80
+  minimum_consensus_frequency: 0.80
+  minimum_consensus_edges: 3
+  minimum_median_edge_jaccard: 0.50
+  minimum_edge_jaccard_floor: 0.25
+  minimum_median_delay_correlation: 0.50
+
+decision_policy:
+  pass: authorize_e5_hpo_and_formal_e3
+  fail: reject_delay_branch_and_use_predeclared_e4_fallback
+  threshold_relaxation_after_observation: false
+  missing_or_invalid_artifact_is_failure: true
+
+data_access:
+  allowed_session: T
+  heldout_session_e_accessed: false
+  openbmi_session_s2_accessed: false

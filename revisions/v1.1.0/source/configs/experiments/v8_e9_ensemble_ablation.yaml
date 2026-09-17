@@ -1,0 +1,34 @@
+experiment_id: V8_E9_FROZEN_ENSEMBLE_ABLATION
+schema: dpc-snn-v8-e9-ensemble/v1
+protocol: bci2a_session_t_train_session_e_single_evaluation
+stage: bci2a_evaluation
+subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds: [0, 1, 2, 3, 4]
+
+retrained_single_variable_ablations:
+  no_augmentation:
+    changed_factor: training_augmentation
+    augmentation_enabled: false
+    all_architecture_optimizer_epoch_and_fusion_settings_unchanged: true
+
+reused_exact_controls:
+  no_snn_residual: E6_anchor
+  matched_ann_dynamics: E6_matched_ann
+  atc_component_only: E6_atcnet
+  fbc_component_only: E6_fbcnet
+  snn_decoder_only: E6_decoder_snn
+  ann_decoder_only: E6_decoder_ann
+  robustness: E7_ensemble_utility
+  delay_and_cross_band: E3_preregistered_rejection
+
+statistics:
+  primary_unit: subject
+  seeds_are_paired_optimization_repeats: true
+  paired_subject_blocked_bootstrap: true
+  exact_subject_sign_test: true
+  pooled_trial_tests_are_diagnostic_only: true
+
+interpretation:
+  retrained_ablation_is_post_e6_explanatory: true
+  no_new_architecture_selection_from_session_e: true
+  openbmi_s2_model_updates: false

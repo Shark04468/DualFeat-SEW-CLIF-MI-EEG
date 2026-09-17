@@ -1,0 +1,8 @@
+{
+  "schema": "dpc-snn-rev-e5-aggregate/v1",
+  "status": "completed",
+  "smoke": false,
+  "seed_rows": 162,
+  "participant_rows": 54,
+  "contrast_rows": 12
+}

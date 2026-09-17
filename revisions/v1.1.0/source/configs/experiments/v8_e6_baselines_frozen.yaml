@@ -1,0 +1,11 @@
+experiment_id: V8_E6_FROZEN_BCI2A_BASELINES
+protocol: bci2a_session_t_train_session_e_single_evaluation
+stage: bci2a_evaluation
+models: [eegnet, fbcnet, atcnet, tcformer, eeg_conformer, mi_snn_plif, bfatcnet]
+subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds: [0, 1, 2, 3, 4]
+checkpoint_rule: frozen_model_specific_development_median_epoch
+session_e_checkpoint_selection: false
+session_e_gradient_updates: false
+save_per_trial_predictions: true
+post_session_e_tuning_allowed: false

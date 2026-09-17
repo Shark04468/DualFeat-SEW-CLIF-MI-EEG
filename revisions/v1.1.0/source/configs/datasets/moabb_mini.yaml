@@ -1,0 +1,24 @@
+name: moabb_mini
+kind: moabb
+processed_root: data/processed/moabb_mini
+datasets:
+  - PhysionetMI
+  - Cho2017
+  - Lee2019_MI
+protocol: within_session
+evaluation: per_subject
+# Lock one scientifically comparable task across all benchmark datasets.  The
+# runner rejects a dataset that does not expose exactly these events.
+n_classes: 2
+events: [left_hand, right_hand]
+tmin: 0.0
+tmax: 4.0
+# Explicitly resample every source dataset before feature extraction. MOABB
+# datasets do not expose a reliable common native-rate attribute.
+resample: 160.0
+include_rest: false
+pipelines:
+  - dpc_snn
+  - eegnet
+  - csp_lda
+  - riemann_lr

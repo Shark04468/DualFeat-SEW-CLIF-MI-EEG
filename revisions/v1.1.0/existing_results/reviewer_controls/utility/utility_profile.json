@@ -1,0 +1,242 @@
+{
+  "schema": "dpc-snn-rev-e4-utility-profile/v1",
+  "status": "completed",
+  "hardware": {
+    "schema": "dpc-snn-rev-e4-hardware-manifest/v1",
+    "platform": "Linux-5.15.0-78-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": "2.8.0+cu128",
+    "cuda_runtime": "12.8",
+    "cudnn": 91002,
+    "gpu_name": "NVIDIA GeForce RTX 4080 SUPER",
+    "gpu_capability": [
+      8,
+      9
+    ],
+    "batch_size": 1,
+    "atc_steps": 18,
+    "warmup": 100,
+    "repetitions": 1000,
+    "cuda_synchronized": true,
+    "energy_claim_supported": false
+  },
+  "profiles": [
+    {
+      "dataset": "bci2a",
+      "n_classes": 4,
+      "subject": 1,
+      "seed": 0,
+      "budget": "n25",
+      "variant": "ann_sew",
+      "checkpoint_sha256": "26eeaecf1428fab7cdc613aa00ede2436361c44e82f71dfaa14c2813bd8388ce",
+      "raw_timing_sha256": "4211add2683de410b94af91ac630dab1b8e823fdec4a42c7b555b3e1c6185958",
+      "dense_mac_proxy": {
+        "scope": "dense_nn_Linear_and_Conv1d_MACs_only",
+        "batch_size": 1,
+        "batch_macs": 621696,
+        "macs_per_trial": 621696.0,
+        "breakdown": {
+          "linear": 430464,
+          "conv1d": 191232
+        },
+        "excluded": [
+          "state_update_scalar_operations",
+          "normalization",
+          "nonlinearities",
+          "interpolation",
+          "memory_traffic"
+        ],
+        "energy_claim_supported": false
+      },
+      "latency": {
+        "repetitions": 1000,
+        "batch_size": 1,
+        "mean_batch_ms": 1.9256701395511626,
+        "median_batch_ms": 2.441215991973877,
+        "p95_batch_ms": 2.5088512301445007,
+        "median_per_trial_ms": 2.441215991973877
+      }
+    },
+    {
+      "dataset": "bci2a",
+      "n_classes": 4,
+      "subject": 1,
+      "seed": 0,
+      "budget": "n25",
+      "variant": "sew_clif",
+      "checkpoint_sha256": "80f05342437f1dafd16ba6f30a43276122f798cc204ab210b5fb30ecc0fa82de",
+      "raw_timing_sha256": "65745cdb52f106d0faed18e977063c62e832cedd956e92caa281767b76cfdde1",
+      "dense_mac_proxy": {
+        "scope": "dense_nn_Linear_and_Conv1d_MACs_only",
+        "batch_size": 1,
+        "batch_macs": 621696,
+        "macs_per_trial": 621696.0,
+        "breakdown": {
+          "linear": 430464,
+          "conv1d": 191232
+        },
+        "excluded": [
+          "state_update_scalar_operations",
+          "normalization",
+          "nonlinearities",
+          "interpolation",
+          "memory_traffic"
+        ],
+        "energy_claim_supported": false
+      },
+      "latency": {
+        "repetitions": 1000,
+        "batch_size": 1,
+        "mean_batch_ms": 12.986706755638123,
+        "median_batch_ms": 12.964863777160645,
+        "p95_batch_ms": 13.119530963897706,
+        "median_per_trial_ms": 12.964863777160645
+      }
+    },
+    {
+      "dataset": "bci2a",
+      "n_classes": 4,
+      "subject": 1,
+      "seed": 0,
+      "budget": "n25",
+      "variant": "soft_clif_exact",
+      "checkpoint_sha256": "0f75d46c712c889c5ce18d3ade5a1c3f7592662cadb11e0ca942923e5836b457",
+      "raw_timing_sha256": "ad913cfa350b478c21bdc61191d058b62cc5023c19cb4ee7b042c238f6007861",
+      "dense_mac_proxy": {
+        "scope": "dense_nn_Linear_and_Conv1d_MACs_only",
+        "batch_size": 1,
+        "batch_macs": 621696,
+        "macs_per_trial": 621696.0,
+        "breakdown": {
+          "linear": 430464,
+          "conv1d": 191232
+        },
+        "excluded": [
+          "state_update_scalar_operations",
+          "normalization",
+          "nonlinearities",
+          "interpolation",
+          "memory_traffic"
+        ],
+        "energy_claim_supported": false
+      },
+      "latency": {
+        "repetitions": 1000,
+        "batch_size": 1,
+        "mean_batch_ms": 11.224710806846618,
+        "median_batch_ms": 11.197344303131104,
+        "p95_batch_ms": 11.461633396148681,
+        "median_per_trial_ms": 11.197344303131104
+      }
+    },
+    {
+      "dataset": "openbmi",
+      "n_classes": 2,
+      "subject": 1,
+      "seed": 0,
+      "budget": "n25",
+      "variant": "ann_sew",
+      "checkpoint_sha256": "0d3dd33196601ae2bb85b52b8b93db79248a7f10fb94e2eaaa00f9da58afe68e",
+      "raw_timing_sha256": "0cb3a162b08dac6e0a0c821093f5add9c40215ba9a999139d983a77cc95cafbb",
+      "dense_mac_proxy": {
+        "scope": "dense_nn_Linear_and_Conv1d_MACs_only",
+        "batch_size": 1,
+        "batch_macs": 621504,
+        "macs_per_trial": 621504.0,
+        "breakdown": {
+          "linear": 430272,
+          "conv1d": 191232
+        },
+        "excluded": [
+          "state_update_scalar_operations",
+          "normalization",
+          "nonlinearities",
+          "interpolation",
+          "memory_traffic"
+        ],
+        "energy_claim_supported": false
+      },
+      "latency": {
+        "repetitions": 1000,
+        "batch_size": 1,
+        "mean_batch_ms": 1.2639961578845977,
+        "median_batch_ms": 1.2574560046195984,
+        "p95_batch_ms": 1.2861807703971864,
+        "median_per_trial_ms": 1.2574560046195984
+      }
+    },
+    {
+      "dataset": "openbmi",
+      "n_classes": 2,
+      "subject": 1,
+      "seed": 0,
+      "budget": "n25",
+      "variant": "sew_clif",
+      "checkpoint_sha256": "38a1a2929443335e4848216d47255a2ac7128431305957220d10e000a20b02f3",
+      "raw_timing_sha256": "4b9db9b25500ddd4754d2ca260b04c053a76ac5f6661b8296d44e4efff2de1e8",
+      "dense_mac_proxy": {
+        "scope": "dense_nn_Linear_and_Conv1d_MACs_only",
+        "batch_size": 1,
+        "batch_macs": 621504,
+        "macs_per_trial": 621504.0,
+        "breakdown": {
+          "linear": 430272,
+          "conv1d": 191232
+        },
+        "excluded": [
+          "state_update_scalar_operations",
+          "normalization",
+          "nonlinearities",
+          "interpolation",
+          "memory_traffic"
+        ],
+        "energy_claim_supported": false
+      },
+      "latency": {
+        "repetitions": 1000,
+        "batch_size": 1,
+        "mean_batch_ms": 12.94920219707489,
+        "median_batch_ms": 12.922880172729492,
+        "p95_batch_ms": 13.21179518699646,
+        "median_per_trial_ms": 12.922880172729492
+      }
+    },
+    {
+      "dataset": "openbmi",
+      "n_classes": 2,
+      "subject": 1,
+      "seed": 0,
+      "budget": "n25",
+      "variant": "soft_clif_exact",
+      "checkpoint_sha256": "d17b68dffb6cd7517d04849905bf435aea0724341db2b12a2c45ba25a6cba017",
+      "raw_timing_sha256": "d7dc69c78717b0308abc52f529824be602de8b26ebabad97e6b48f55a8ae4fe1",
+      "dense_mac_proxy": {
+        "scope": "dense_nn_Linear_and_Conv1d_MACs_only",
+        "batch_size": 1,
+        "batch_macs": 621504,
+        "macs_per_trial": 621504.0,
+        "breakdown": {
+          "linear": 430272,
+          "conv1d": 191232
+        },
+        "excluded": [
+          "state_update_scalar_operations",
+          "normalization",
+          "nonlinearities",
+          "interpolation",
+          "memory_traffic"
+        ],
+        "energy_claim_supported": false
+      },
+      "latency": {
+        "repetitions": 1000,
+        "batch_size": 1,
+        "mean_batch_ms": 11.19244536972046,
+        "median_batch_ms": 11.163919925689697,
+        "p95_batch_ms": 11.4309552192688,
+        "median_per_trial_ms": 11.163919925689697
+      }
+    }
+  ],
+  "interpretation": "GPU latency and dense-operation proxies do not establish neuromorphic energy efficiency or closed-loop clinical latency."
+}

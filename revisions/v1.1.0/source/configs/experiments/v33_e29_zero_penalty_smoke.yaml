@@ -1,0 +1,13 @@
+experiment_id: E29Z_SMOKE
+schema: dpc-snn-e29zp-openbmi/v1
+status: implementation_smoke_only
+subjects: [1]
+seeds: [0]
+training:
+  fixed_epochs: 2
+  batch_size: 48
+  learning_rate: 0.001
+  weight_decay: 0.001
+  firing_rate_weight: 0.0
+model: {n_classes: 2, hidden_channels: 64, decoder_layers: 2, readout_features: 96, dropout: 0.25}
+

@@ -1,3 +1,13 @@
+# v1.1.0 revision evidence
+
+See [the new revision archive](revisions/v1.1.0/README.md) and [release v1.1.0](https://github.com/Shark04468/DualFeat-SEW-CLIF-MI-EEG/releases/tag/v1.1.0). Historical root code and v1.0.1 are preserved. New formal trial-level classification predictions/logits are not included. Zenodo v1.1.0 deposition is pending; the old DOI does not identify these additions. Source: MIT; new results/descriptions: CC BY 4.0.
+
+---
+
+## Historical release documentation
+
+The following describes the historical release, not coverage of the v1.1.0 additions.
+
 # DualFeat-SEW-CLIF for Motor-Imagery EEG
 
 This repository contains the versioned source code, experiment configurations,

@@ -1,0 +1,12 @@
+{
+  "schema": "dpc-snn-reviewer-controls-aggregate/v1",
+  "status": "completed",
+  "smoke": false,
+  "seed_rows": 3348,
+  "participant_rows": 1116,
+  "contrast_rows": 132,
+  "spike_rows": 2052,
+  "operation_proxy_rows": 513,
+  "seed_aggregation": "mean_within_participant_before_inference",
+  "single_budget_inference": "paired_participant_bootstrap"
+}

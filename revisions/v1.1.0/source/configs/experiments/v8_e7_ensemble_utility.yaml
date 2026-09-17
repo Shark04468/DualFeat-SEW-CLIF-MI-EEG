@@ -1,0 +1,39 @@
+experiment_id: V8_E7_FROZEN_ENSEMBLE_UTILITY
+schema: dpc-snn-v8-e7-ensemble/v1
+protocol: frozen_e6_ensemble_posthoc_utility_without_model_updates
+stage: bci2a_evaluation
+
+early_decision:
+  endpoints_seconds: [0.5, 1.0, 2.0, 4.0]
+  primary_endpoint_seconds: 1.0
+  truncation: zero_future_task_carrier_before_causal_filtering
+
+robustness:
+  gaussian_snr_db: [20.0, 10.0, 0.0]
+  channel_drop_counts: [1, 2, 4]
+  perturbation_seed_is_subject_seed_condition_locked: true
+
+calibration:
+  confidence_bins: 15
+  k_per_class: [1, 2, 4, 8, 16]
+  repeats: 10
+  calibrator: positive_scalar_temperature_plus_centered_class_bias
+  bias_l2: 0.05
+  session_e_role: posthoc_adaptation_analysis_not_untouched_test_accuracy
+
+operation_proxy:
+  scope: decoder_only_synaptic_weight_uses
+  shared_dense_atc_fbc_frontends_excluded: true
+  hardware_energy_claim_allowed: false
+
+gate:
+  maximum_final_accuracy_gap_pp: 0.3
+  minimum_early_or_robustness_or_kshot_gain_pp: 0.5
+  minimum_operation_proxy_reduction: 0.5
+  final_accuracy_must_be_preserved: true
+  at_least_one_utility_win_required: true
+
+data_access:
+  session_e_model_updates: false
+  session_e_checkpoint_selection: false
+  openbmi_session_s2_accessed: false

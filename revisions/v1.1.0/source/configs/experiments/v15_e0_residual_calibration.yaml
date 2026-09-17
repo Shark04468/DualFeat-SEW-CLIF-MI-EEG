@@ -1,0 +1,34 @@
+experiment_id: v15_e0_residual_calibration
+stage: session_t_development
+dataset: bci2a_v62
+subjects: [1, 3, 8]
+seeds: [0]
+folds: [0, 1, 2, 3, 4, 5]
+source:
+  experiment: v14_r1_shared_residual
+  source_tree_sha256: 46d2e270e3d7f74da8705ff60fe06388267a41202efe181f32e7af59383a0f11
+  checkpoints: [selection_best.pt, outer_last.pt]
+methods:
+  - r0_shared_replay
+  - c1_atc_raw
+  - c2_atc_rms
+  - c3_generic_rms
+primary: c2_atc_rms
+capacity_control: c3_generic_rms
+calibration:
+  alpha_grid: [0.0, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0, 1.5, 2.0]
+  selection_data: session_t_inner_validation_only
+  primary_metric: kappa
+  tie_breakers: [accuracy, smallest_alpha]
+  outer_labels_used_for_selection: false
+locked_data:
+  bci2a_session_e: true
+  openbmi_session_s2: true
+promotion_gate:
+  mechanism:
+    mean_gain_pp_min: 0.5
+    positive_subjects_min: 2
+    worst_subject_regression_pp_max: 1.0
+    positive_net_rescue_required: true
+  architecture:
+    gain_over_generic_control_pp_min: 0.3

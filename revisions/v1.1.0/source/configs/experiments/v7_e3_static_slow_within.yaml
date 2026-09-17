@@ -1,0 +1,61 @@
+experiment_id: V7_E3_STATIC_SLOW_WITHIN
+protocol: bci2a_session_t_run_grouped_oof
+architecture_version: dasp_snn_v7_degree_normalized_route_r7
+schema_version: 9
+stage: static_slow_within
+parent_config: configs/experiments/v7_e2_zero_scaffold_core_atc.yaml
+
+transport:
+  broadband_carrier: identity_d0_plus_degree_normalized_audited_route_contrasts
+  matched_zero_intervention: delay_posterior_only
+  readout: degree_normalized_audited_route_delay_contrast_only
+
+model_overrides:
+  atc_delayed_statistics_uncertainty_gate: false
+  atc_delayed_statistics_cp_rank: 0
+  atc_delayed_statistics_bins: 0
+  atc_delayed_statistics_directional_moments: false
+  atc_delayed_route_statistics_cp_rank: 8
+  atc_delayed_route_statistics_bins: 16
+
+subjects: [1, 3, 8]
+seeds: [0, 1, 2]
+selection_seed: 0
+selection:
+  session: T
+  method: six_fold_run_grouped
+  n_splits: 6
+  max_epochs: 120
+  patience: 30
+  minimum_epochs: 20
+
+training:
+  batch_size: 2
+  gradient_accumulation_steps: 4
+  effective_batch_size: 8
+  learning_rate: 0.0003
+  weight_decay: 0.001
+  beta1: 0.9
+  scheduler_warmup_epochs: 5
+  schedule: true
+  validation_interval: 5
+  train_readout: false
+  readout_training_scope: fixed_delay_head
+  initial_atc_residual_scale: 0.0
+  slow_carrier_residual_scale: 0.0
+  delayed_statistics_interaction_gain: 0.0
+  auxiliary_endpoint_weights: [0.0, 0.0, 0.0]
+
+augmentation:
+  enabled: false
+  reason: delay_trainable_stage_excludes_segment_reconstruction
+
+control:
+  primary: same_checkpoint_learned_delay_vs_locked_zero
+  state_mutation_allowed: false
+  amplitude_rms_tolerance_fraction: 0.05
+
+gate:
+  median_delta_pp: 0.5
+  minimum_positive_pairs: 6
+  total_subject_seed_pairs: 9

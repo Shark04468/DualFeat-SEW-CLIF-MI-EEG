@@ -1,0 +1,111 @@
+experiment_id: V62_P0_PROTOCOL
+protocol: dasp_snn_v6_2_r1_p0
+architecture_version: dasp_snn_v6_2_r1
+schema_version: 1
+
+dataset:
+  name: bci2a
+  subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  sessions: [T, E]
+  expected_trials_per_subject_session: 288
+
+trial_metadata:
+  required_fields:
+    - dataset
+    - subject
+    - session
+    - run
+    - trial_id
+    - class
+    - sfreq
+    - ch_names
+    - epoch_tmin
+    - epoch_tmax
+  require_unique_physical_trial_identity: true
+  require_session_consistent_acquisition_metadata: true
+
+split:
+  selection_session: T
+  evaluation_session: E
+  method: run_grouped
+  n_splits: 6
+  seed: 0
+  shuffle_groups: true
+  random_window_split_allowed: false
+
+isolation:
+  session_t_only_roles:
+    - training
+    - validation
+    - augmentation
+    - normalization
+    - euclidean_alignment
+    - prior
+    - checkpoint_selection
+    - hpo
+  session_e_only_roles:
+    - heldout_evaluation
+  augmentation_parents_must_be_inner_train: true
+  heldout_session_e_may_select_checkpoint: false
+
+fingerprint:
+  schema: dasp-snn-v6.2-r1-p0-fingerprint/v1
+  canonical_encoding: canonical_json_utf8
+  algorithm: sha256
+  required_components:
+    - resolved_config
+    - source
+    - data
+    - split
+    - augmentation
+    - prior
+    - checkpoint
+    - environment
+  resume_requires_complete_equality: true
+
+predictions:
+  basename: predictions
+  formats: [npz, csv]
+  required_fields:
+    - logits
+    - probabilities
+    - pred
+    - label
+    - subject
+    - session
+    - run
+    - trial_id
+    - seed
+    - model
+
+run_artifacts:
+  manifest: manifest.json
+  verify_sha256: true
+  required_files:
+    - resolved_config.yaml
+    - manifest.json
+    - source_fingerprint.json
+    - split_manifest.json
+    - augmentation_manifest.json
+    - history.csv
+    - predictions.npz
+    - predictions.csv
+    - metrics.json
+    - best.pt
+    - last.pt
+    - runtime_status.json
+    - stdout.log
+    - stderr.log
+
+storage:
+  root: /root/autodl-tmp/DPC-SNN_storage
+  directories: [data, cache, runs, checkpoints, tmp]
+  environment_paths:
+    HF_HOME: cache/huggingface
+    TORCH_HOME: cache/torch
+    MNE_DATA: data/mne
+    MOABB_DATA: data/moabb
+    XDG_CACHE_HOME: cache/xdg
+    PIP_CACHE_DIR: cache/pip
+    TMPDIR: tmp
+  maximum_system_disk_growth_gb: 5

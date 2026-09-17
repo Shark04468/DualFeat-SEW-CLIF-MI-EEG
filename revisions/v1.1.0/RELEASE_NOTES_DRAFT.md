@@ -1,0 +1,3 @@
+# Draft release notes — author approval required
+
+Add supplemental revision evidence for manuscript 1966366: exact-gradient Soft-CLIF; shared-readout GRU-Stat/TCN-Stat; equal-update sensitivity; BCI2a binary sensitivity; sparsity, operation proxy and GPU timing. Source bytes match the recorded 536-file manifest. Existing metrics and configurations are unchanged. Formal trial-level predictions/logits are not included; this limitation must remain explicit unless original artifacts are recovered. This is an additive version candidate, not a replacement for v1.0.1 or Zenodo 21905851. No new DOI assigned and nothing published.

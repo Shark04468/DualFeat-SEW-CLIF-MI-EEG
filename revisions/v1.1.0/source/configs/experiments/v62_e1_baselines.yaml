@@ -1,0 +1,72 @@
+experiment_id: V62_E1_BASELINES
+protocol: bci2a_subject_specific_t_to_e
+architecture_version: dasp_snn_v6_2_r1
+schema_version: 1
+
+models:
+  - eegnet
+  - fbcnet
+  - atcnet
+  - tcformer
+  - eeg_conformer
+  - mi_snn_plif
+  - bfatcnet
+
+subjects: [1, 3, 8]
+seeds: [0, 1, 2]
+selection_seed: 0
+selection:
+  session: T
+  method: six_fold_run_grouped
+  n_splits: 6
+  max_epochs: 300
+  patience: 60
+  selected_epoch_statistic: median
+  minimum_final_epochs: 40
+evaluation:
+  session: E
+  checkpoint_selection_allowed: false
+
+preprocessing:
+  reference: CAR
+  baseline_interval_seconds: [-1.0, 0.0]
+  task_interval_seconds: [0.0, 4.0]
+  gain: inner_train_channel_rms
+  clip_after_gain: 12.0
+  fbcnet_filterbank_hz:
+    - [4, 8]
+    - [8, 12]
+    - [12, 16]
+    - [16, 20]
+    - [20, 24]
+    - [24, 28]
+    - [28, 32]
+    - [32, 36]
+    - [36, 40]
+  model_views:
+    eegnet:
+      task_crop_seconds: [0.5, 2.5]
+      anti_alias_resample_hz: 128
+    eeg_conformer:
+      zero_phase_bandpass_hz: [4, 40]
+    fbcnet:
+      causal_chebyshev_ii_filterbank: true
+    all_others:
+      task_crop_seconds: [0.0, 4.0]
+
+augmentation:
+  enabled: true
+  parent_scope: current_inner_train_batch_only
+  segments: 8
+  probability: 0.5
+  noise_std: 0.01
+  scale_range: [0.9, 1.1]
+
+source_fidelity:
+  eegnet: tcformer_official_pytorch_module
+  fbcnet: fbcnet_official_network_and_filterbank
+  atcnet: tcformer_official_pytorch_module
+  tcformer: tcformer_official_pytorch_module
+  eeg_conformer: tcformer_official_pytorch_module
+  mi_snn_plif: snnformi_architecture_torch_backend
+  bfatcnet: paper_faithful_reconstruction_no_official_code

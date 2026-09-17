@@ -1,0 +1,102 @@
+model: dpc_snn
+architecture_version: dpc_snn_v3_9_scientific_repair
+n_classes: 4
+n_channels: 22
+n_bands: 7
+hidden_channels: 64
+snn_channels: 64
+latent_nodes: 16
+spatial_max_deviation: 0.75
+spatial_band_rank: 4
+spatial_band_deviation: 0.25
+timesteps: 500
+# 125 Hz leaves a real transition band above the 40 Hz carrier ceiling.
+graph_rate_hz: 125.0
+graph_timesteps: 500
+preserve_graph_rate: true
+temporal_pool_bins: 64
+temporal_pool_channels: 8
+d_max: 8
+slow_d_max: 8
+slow_downsample: 4
+# Upper bound, not an exact top-k quota.
+graph_sparsity: 0.02
+use_cross_band_routes: true
+delay_temperature: 0.75
+min_delay_temperature: 0.35
+# Delay is mandatory. Per-edge gates sparsify delayed routes; no phase-only bypass exists.
+delay_gate_init: 0.0
+delay_lr_multiplier: 0.25
+n_delay_experts: 4
+delay_expert_topk: 2
+router_warmup_fraction: 0.35
+router_noise_scale: 1.0
+# Online neural route odds are not an offline Bayes factor.
+route_odds_threshold: 0.0
+hurdle_route_temperature: 0.75
+route_rank: 4
+decoder_layers: 3
+decoder_neuron: clif
+causal_channel_norm: true
+sew_connect_function: ADD
+snn_membrane_norm_groups: 0
+# V3.8 short-prefix heads were at chance and are disabled until onset-aware
+# targets pass a separate validation gate.
+cumulative_readout_seconds: []
+delay_evidence_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 12.0]
+  - [12.0, 14.0]
+  - [14.0, 17.0]
+  - [17.0, 20.0]
+  - [20.0, 23.0]
+  - [23.0, 26.0]
+  - [26.0, 30.0]
+  - [30.0, 34.0]
+  - [34.0, 37.0]
+  - [37.0, 40.0]
+max_phase_residual: 0.25
+# CSD is fit-free per trial and is applied before coordinate-aware projection.
+physical_reference: csd
+coordinate_spatial_projection: true
+reference_augmentation_prob: 0.0
+euclidean_alignment: false
+fold_local_evidence_prior: true
+fold_local_bootstrap_samples: 128
+use_covariance: true
+use_phase_confidence: true
+task_tmin: 0.0
+task_tmax: 4.0
+baseline_tmin: -1.0
+current_gain: 0.5
+use_membrane_readout: true
+spike_rate_target: 0.12
+band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 13.0]
+  - [13.0, 18.0]
+  - [18.0, 24.0]
+  - [24.0, 30.0]
+  - [30.0, 40.0]
+encoder:
+  mode: post_fusion_lif
+  threshold: 0.5
+  deterministic: true
+lif:
+  tau_mem: 0.90
+  threshold: 1.0
+  reset: 0.0
+regularization:
+  spike_rate: 1.0
+  graph_l1: 0.0001
+  delay_entropy: 0.0
+  # Match sparse incoming route density per node; never reward all-delay collapse.
+  delay_gate_structure: 0.001
+  spatial_orthogonal: 0.001
+  graph_prior: 0.0001
+  delay_alignment: 0.01
+  delay_anchor_kl: 0.1
+  expert_balance: 0.1
+  expert_diversity: 0.01

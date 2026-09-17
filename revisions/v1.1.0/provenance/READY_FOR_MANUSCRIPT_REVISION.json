@@ -1,0 +1,12 @@
+{
+  "schema": "dpc-snn-major-revision-readiness/v1",
+  "status": "READY_FOR_MANUSCRIPT_REVISION",
+  "publication_datasets": 2,
+  "v30_checkpoints": 108,
+  "v31_checkpoints": 1026,
+  "reviewer_checkpoints": 2322,
+  "binary_checkpoints": 162,
+  "recovery_label_subjects": 72,
+  "latency_gpu": "NVIDIA GeForce RTX 4080 SUPER",
+  "scientific_scope": "retrospective recovered parent; no renewed blind-confirmation claim"
+}

@@ -1,0 +1,95 @@
+experiment_id: V42_IDENTIFIABLE_DECODER
+protocol: v42_repeated_session_T_identifiable_delay_gate
+
+transport_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 12.0]
+  - [12.0, 14.0]
+  - [14.0, 17.0]
+  - [17.0, 20.0]
+  - [20.0, 23.0]
+  - [23.0, 26.0]
+  - [26.0, 30.0]
+  - [30.0, 34.0]
+  - [34.0, 37.0]
+  - [37.0, 40.0]
+
+classification_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 13.0]
+  - [13.0, 18.0]
+  - [18.0, 24.0]
+  - [24.0, 30.0]
+  - [30.0, 40.0]
+
+paired_gate_variants:
+  - name: fixed_audited_delay
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 3
+  - name: matched_zero_delay
+    fixed_delay_steps: 0.0
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 3
+
+five_stages:
+  - name: matched_zero_delay
+    fixed_delay_steps: 0.0
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 3
+  - name: fixed_audited_delay
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: true
+    use_cross_band_routes: false
+    decoder_layers: 3
+  - name: learned_hurdle
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: false
+    use_cross_band_routes: false
+    decoder_layers: 3
+  - name: pair_cross_band
+    fixed_delay_steps: null
+    force_zero_delay: false
+    freeze_delay_posterior: false
+    use_cross_band_routes: true
+    decoder_layers: 3
+
+non_negotiable:
+  baseline_tmin: -1.0
+  task_window_seconds: [-1.0, 4.0]
+  delay_evidence_reference: csd
+  carrier_filterbank_equals_evidence_filterbank: true
+  euclidean_alignment: false
+  fold_local_evidence_prior: true
+  classifier_free_prior_gate_required: true
+  minimum_accepted_delay_edges: 1
+  phase_surrogate_must_reduce_support: true
+  time_reversal_max_transpose_mae: 0.05
+  fold_local_directionality: psi_plus_imaginary_coherence
+  time_reversal_control: true
+  phase_surrogate_control: true
+  freeze_shared_physical_basis: true
+  freeze_shared_filterbank: true
+  freeze_tau_after_pretraining: true
+  train_phase_only_after_tau_identification: true
+  preserve_transport_band_pairs: true
+  delayed_statistics_after_transport_only: true
+  delayed_directional_moments: true
+  decoder: two_sew_blocks_plus_final_clif_respike
+  binary_spike_regularization_only: true
+  temporal_pool_bins: 128
+  reference_augmentation_prob: 0.0
+  cumulative_readout_seconds: []
+  tet_loss_weight: 0.0
+  select_last_checkpoint: true
+  heldout_session_E_accessed: false

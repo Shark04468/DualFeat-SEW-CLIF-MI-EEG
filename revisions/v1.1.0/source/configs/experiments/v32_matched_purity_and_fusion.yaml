@@ -1,0 +1,63 @@
+experiment_id: V32_MATCHED_PURITY_AND_FUSION
+schema: dpc-snn-v32-matched-purity-fusion/v1
+status: registered_before_new_training
+parent_evidence: E28_full_9x3_8fe5f147e7ce
+primary_question: does_sew_clif_retain_its_matched_advantage_under_the_same_ce_loss
+
+dataset:
+  name: BCI Competition IV Dataset 2a
+  session: T
+  subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  seeds: [0, 1, 2]
+  folds: [0, 1, 2, 3, 4, 5]
+
+canary:
+  subjects: [1, 3, 8]
+  seeds: [0]
+  folds: [0, 1, 2, 3, 4, 5]
+  gate:
+    mean_fr0_minus_ann_pp_minimum: 0.5
+    positive_subjects_minimum: 2
+    original_gain_retained_fraction_minimum: 0.8
+    fr0_minus_fr001_pp_minimum: -2.0
+
+full_gate:
+  mean_fr0_minus_ann_pp_minimum: 0.5
+  positive_subjects_minimum: 7
+  original_gain_retained_fraction_minimum: 0.8
+  fr0_minus_fr001_pp_minimum: -2.0
+  one_sided_wilcoxon_maximum: 0.05
+
+training:
+  variant: sew_clif_ce
+  firing_rate_weight: 0.0
+  epochs: 160
+  patience: 30
+  minimum_outer_epochs: 20
+  batch_size: 48
+  learning_rate: 0.001
+  weight_decay: 0.001
+
+model:
+  n_classes: 4
+  hidden_channels: 64
+  decoder_layers: 2
+  readout_features: 96
+  dropout: 0.25
+  fusion_mode: interaction
+
+fusion_ablation:
+  authorized_only_after_full_purity_gate: true
+  modes: [atc_only, fbc_only, simple, interaction]
+  simple_control: capacity_matched_repeated_branch_features
+  fixed_firing_rate_weight: 0.0
+  primary_scope: bci2a_session_t_six_fold_oof
+  followup_scope: [openbmi_s1_to_s2, bnci2014_004_cross_session]
+
+comparability:
+  reuse_sealed_frozen_feature_cache: true
+  recompute_feature_standardizer_from_each_training_fold: true
+  same_fold_seed_and_epoch_selection_rule: true
+  existing_ann_and_fr001_predictions_are_read_only_controls: true
+  evaluation_sessions_are_not_accessed_in_bci2a_development: true
+

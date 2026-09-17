@@ -1,0 +1,19 @@
+experiment_id: V62_E0_INVARIANTS
+protocol: synthetic_causal_and_numerical_invariants
+architecture_version: dasp_snn_v6_2_r1
+model_config: configs/models/dasp_snn_v62.yaml
+seed: 0
+cpu_smoke_batch: 1
+cuda_smoke_batch: 2
+tolerances:
+  future_prefix_atol: 1.0e-6
+  fractional_delay_atol: 1.0e-6
+  forty_hz_peak_error_hz: 0.5
+  forty_hz_analytic_amplitude_min: 0.65
+  forty_hz_analytic_amplitude_max: 1.15
+  timestamp_peak_error_fast_samples: 1
+  maximum_parameters: 220000
+  target_parameter_min: 120000
+  target_parameter_max: 160000
+  maximum_cuda_peak_allocated_mib: 8192
+

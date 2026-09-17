@@ -1,0 +1,26 @@
+name: synthetic_delay_phase
+kind: synthetic
+sfreq: 250
+n_channels: 22
+n_classes: 4
+n_trials: 512
+n_time: 256
+bands:
+  mu: [8.0, 13.0]
+  beta: [13.0, 30.0]
+carrier_frequencies_hz: [10.0, 18.0]
+noise_std: 0.35
+style_std: 0.15
+phase_jitter: 0.25
+# Raw samples.  With 256 samples and the synthetic 16-step model this yields
+# an exact 16-sample delay bin, so every active GT delay is representable.
+max_delay: 64
+class_patterns:
+  - name: c3_to_cz_to_c4
+    direction: forward
+  - name: c4_to_cz_to_c3
+    direction: backward
+  - name: central_sync
+    direction: sync
+  - name: bilateral_antiphase
+    direction: antiphase

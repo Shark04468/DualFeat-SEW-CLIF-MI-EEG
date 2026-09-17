@@ -1,0 +1,118 @@
+experiment_id: V51_HARDWARE_FREE_PLAN
+protocol: v51_openbmi_mechanism_first_hardware_free
+architecture_version: dpc_snn_v5_1_openbmi_physical
+dataset_config: configs/datasets/openbmi.yaml
+
+transport_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 12.0]
+  - [12.0, 14.0]
+  - [14.0, 17.0]
+  - [17.0, 20.0]
+  - [20.0, 23.0]
+  - [23.0, 26.0]
+  - [26.0, 30.0]
+  - [30.0, 34.0]
+  - [34.0, 37.0]
+  - [37.0, 40.0]
+
+classification_band_edges_hz:
+  - [6.0, 8.0]
+  - [8.0, 10.0]
+  - [10.0, 13.0]
+  - [13.0, 18.0]
+  - [18.0, 24.0]
+  - [24.0, 30.0]
+  - [30.0, 40.0]
+
+model_overrides:
+  delay_evidence_estimator: continuous_signed_phase
+  graph_rate_hz: 250.0
+  graph_timesteps: 1000
+  timesteps: 1000
+  continuous_delay_grid_oversample: 4
+  continuous_delay_min_bayes_factor: 3.0
+  continuous_delay_min_bootstrap_frequency: 0.70
+  continuous_delay_min_direction_probability: 0.80
+  fold_local_bootstrap_samples: 128
+  freeze_shared_physical_basis: true
+  freeze_shared_filterbank: true
+  freeze_delay_after_pretrain: true
+  preserve_transport_band_pairs: true
+  preserve_graph_rate: true
+  delayed_stat_channels: 0
+  delayed_directional_moments: false
+  event_native_transport: true
+  event_envelope_threshold: 0.05
+  event_phase_confidence_threshold: 0.10
+  learnable_event_threshold: false
+  checkpoint_event_routes: true
+  multiscale_snn: true
+  decoder_timescales: [0.65, 0.90, 0.975]
+  snn_native_readout: true
+  snn_readout_decays: [0.50, 0.90, 0.99]
+  decoder_mode: snn
+  decoder_layers: 2
+  decoder_neuron: clif
+  sew_connect_function: ADD
+  causal_channel_norm: false
+  use_membrane_readout: false
+  temporal_pool_channels: 16
+  use_cross_band_routes: true
+  n_delay_experts: 4
+  delay_expert_topk: 2
+  graph_sparsity: 0.02
+  rejected_route_prior_floor: 0.02
+
+mechanism_power:
+  delay_milliseconds: [1, 2, 4, 8, 12, 16, 24, 32]
+  injection_strengths: [0.10, 0.25, 0.50]
+  synthetic_repetitions: 50
+  synthetic_trials: 40
+  synthetic_nodes: 4
+  synthetic_time_steps: 384
+  synthetic_ar_coefficient: 0.97
+  synthetic_bootstrap_samples: 64
+  semi_synthetic_seeds: [0, 1, 2]
+  minimum_direction_accuracy: 0.80
+  maximum_median_delay_mae_ms: 2.0
+  maximum_null_false_positive_rate: 0.05
+
+real_evidence_gate:
+  minimum_routes_per_subject: 3
+  minimum_passing_development_subjects: 8
+  minimum_split_half_delay_correlation: 0.50
+  minimum_bootstrap_frequency: 0.70
+  phase_surrogate_must_reduce_support: true
+  time_reversal_max_transpose_mae: 0.05
+
+classification_pilot_gate:
+  seeds: [0, 1, 2]
+  minimum_median_full_minus_zero_accuracy: 0.02
+  minimum_positive_subjects: 8
+  ann_noninferiority_margin: 0.01
+  minimum_stable_experts: 3
+  early_windows_seconds: [0.25, 0.5, 1.0, 2.0, 4.0]
+
+confirmatory:
+  architecture_must_be_frozen: true
+  train_session: S1
+  test_session: S2
+  seeds: [0, 1, 2]
+  statistical_unit: subject
+  seed_is_not_independent_sample: true
+  save_trial_predictions: true
+
+efficiency_claim_boundary:
+  allowed:
+    - spike_count
+    - synops_proxy
+    - event_density
+    - batch1_cpu_gpu_latency
+    - peak_memory
+    - measured_host_energy_when_available
+    - quantized_software_mapping
+  forbidden_without_physical_chip:
+    - neuromorphic_chip_energy_saving
+    - assumed_pj_per_synop_as_measured_energy

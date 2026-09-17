@@ -1,0 +1,59 @@
+experiment_id: E31Z_OBJECTIVE_PURE_DECODER_LEARNING_CURVE
+schema: dpc-snn-e31zp-decoder-learning-curve/v1
+status: registered_before_training
+parent_run_id: E31_decoder_curve_b4458e9433dc
+parent_firing_rate_weight: 0.01
+question: does_label_regime_dependence_persist_with_zero_firing_rate_penalty
+
+datasets:
+  bci2a:
+    subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    n_classes: 4
+    training_session: T
+    evaluation_session: E
+  openbmi:
+    subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+      19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+      37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
+    n_classes: 2
+    training_session: S1
+    evaluation_session: S2
+  bnci2014_004:
+    subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    n_classes: 2
+    training_sessions: [01T, 02T, 03T]
+    evaluation_sessions: [04E, 05E]
+
+seeds: [0, 1, 2]
+budgets:
+  bci2a: [n25, n50, all]
+  openbmi: [n25, all]
+  bnci2014_004: [n25, n50, n100, all]
+training:
+  variant: sew_clif_ce
+  fixed_epochs: 80
+  batch_size: 48
+  learning_rate: 0.001
+  weight_decay: 0.001
+  firing_rate_weight: 0.0
+model:
+  hidden_channels: 64
+  decoder_layers: 2
+  readout_features: 96
+  dropout: 0.25
+analysis:
+  response: zero_penalty_snn_minus_parent_ann_accuracy
+  predictor: log2_examples_per_class
+  unit: subject_after_seed_averaging
+  dataset_fixed_effects: true
+  dataset_interactions: true
+  subject_cluster_bootstrap_repetitions: 10000
+  expected_direction: negative
+  strong_support_requires_upper_95_percent_bound_below_zero: true
+comparability:
+  reuse_parent_feature_arrays: true
+  reuse_parent_nested_subsets: true
+  reuse_parent_standardizers: true
+  reuse_parent_ann_predictions: true
+  require_identical_labels_and_trial_ids: true
+  parent_assets_are_read_only: true

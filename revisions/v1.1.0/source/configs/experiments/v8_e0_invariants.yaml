@@ -1,0 +1,37 @@
+experiment_id: V8_E0_INVARIANTS
+protocol: dpc_snn_v8_accuracy_first
+architecture_version: dpc_snn_v8_accuracy_first_r4_gain_invariant_envelope
+model_config: configs/models/v8_accuracy_first.yaml
+seed: 0
+
+cpu_smoke:
+  n_bands: 3
+  n_latent_nodes: 4
+  band_edges_hz: [[6, 10], [10, 14], [14, 20]]
+  task_tmax: 1.0
+  analytic_taps: 33
+  envelope_taps: 9
+  fast_decimation: 1
+  temporal_dilations: [1, 2]
+  temporal_depth: 1
+  decoder_layers: 1
+  decoder_channels: 8
+  endpoint_seconds: [0.5, 1.0]
+  statistical_spatial_filters: 2
+  statistical_features: 12
+  statistical_segments: 2
+  covariance_features_per_band: 2
+  fusion_features: 16
+  parameter_ceiling: 50000
+
+cuda_smoke_batch: 2
+tolerances:
+  maximum_parameters: 300000
+  maximum_cuda_peak_allocated_mib: 12288
+  future_prefix_atol: 0.0
+  minimum_matched_current_rms: 0.0
+  minimum_full_delay_logit_difference: 1.0e-10
+  forty_hz_peak_error_hz: 0.5
+  forty_hz_analytic_amplitude_min: 0.65
+  forty_hz_analytic_amplitude_max: 1.15
+  maximum_decoder_parameter_count_difference: 0

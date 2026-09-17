@@ -1,0 +1,19 @@
+{
+  "schema": "dpc-snn-rev-e4-hardware-manifest/v1",
+  "platform": "Linux-5.15.0-78-generic-x86_64-with-glibc2.35",
+  "python": "3.12.3",
+  "torch": "2.8.0+cu128",
+  "cuda_runtime": "12.8",
+  "cudnn": 91002,
+  "gpu_name": "NVIDIA GeForce RTX 4080 SUPER",
+  "gpu_capability": [
+    8,
+    9
+  ],
+  "batch_size": 1,
+  "atc_steps": 18,
+  "warmup": 100,
+  "repetitions": 1000,
+  "cuda_synchronized": true,
+  "energy_claim_supported": false
+}

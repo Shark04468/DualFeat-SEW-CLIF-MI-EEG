@@ -1,0 +1,63 @@
+experiment_id: V8_E9_FROZEN_ABLATION
+protocol: bci2a_session_t_train_session_e_single_evaluation
+stage: bci2a_evaluation
+subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+seeds: [0, 1, 2, 3, 4]
+
+reference:
+  source: E6_frozen_campaign
+  when_delay_disabled: frozen_primary
+  when_delay_enabled: frozen_primary_matched_zero
+  post_session_e_selection: false
+
+retrained_single_variable_ablations:
+  no_covariance:
+    model_overrides:
+      use_covariance_branch: false
+    augmentation_overrides: {}
+  no_statistics:
+    model_overrides:
+      use_statistical_branch: false
+    augmentation_overrides: {}
+  no_temporal:
+    model_overrides:
+      use_temporal_branch: false
+    augmentation_overrides: {}
+  no_augmentation:
+    model_overrides: {}
+    augmentation_overrides:
+      enabled: false
+
+reused_controls:
+  snn_to_ann: E6_matched_ann_when_SNN_is_primary
+  delay_to_zero: E6_matched_zero_when_delay_is_enabled
+  cross_band: E3_sequential_gate_and_E6_only_if_promoted
+  robustness: E7_frozen_utility_campaign
+
+training:
+  train_session: T
+  checkpoint_rule: frozen_primary_global_development_median_epoch
+  retrain_on_all_session_t: true
+  optimizer_budget_matches_frozen_primary: true
+  session_e_checkpoint_selection: false
+  session_e_gradient_updates: false
+
+evaluation:
+  session: E
+  evaluate_once_per_subject_seed_ablation: true
+  save_trial_logits_probabilities_predictions: true
+  state_must_not_change_during_evaluation: true
+
+statistics:
+  primary_unit: subject
+  seeds_are_paired_optimization_repeats: true
+  paired_subject_blocked_bootstrap: true
+  exact_subject_sign_flip_test: true
+  multiple_comparison_correction: Holm
+  pooled_trial_tests_are_diagnostic_only: true
+
+data_access:
+  requires_validated_pre_e6_freeze: true
+  requires_passed_e6_audit: true
+  post_session_e_tuning_allowed: false
+  openbmi_session_s2_accessed: false

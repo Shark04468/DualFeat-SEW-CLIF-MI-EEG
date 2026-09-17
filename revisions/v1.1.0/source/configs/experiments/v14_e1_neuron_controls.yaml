@@ -1,0 +1,30 @@
+experiment_id: v14_e1_neuron_controls
+stage: session_t_development
+subjects: [1, 3, 8]
+seeds: [0, 1, 2]
+folds: [0, 1, 2, 3, 4, 5]
+base: selected_v12_variant
+decoder_kinds: [ann, plif, clif]
+matched:
+  frontend: true
+  fusion: true
+  objective: true
+  hpo_budget: true
+hpo:
+  learning_rates: [0.0003, 0.001]
+  weight_decays: [0.0001, 0.001]
+  configurations_per_decoder: 4
+metrics:
+  - accuracy
+  - kappa
+  - endpoint_accuracy_1_2_3_4s
+  - perturbation_robustness
+  - firing_rate
+  - cached_feature_decoder_gpu_latency
+gates:
+  clif_minus_ann_mean_pp_minimum: -0.3
+  utility_gain_pp_minimum: 0.5
+  clif_firing_rate_maximum: 0.25
+locked_data:
+  bci2a_session_e: true
+  openbmi_session_s2: true

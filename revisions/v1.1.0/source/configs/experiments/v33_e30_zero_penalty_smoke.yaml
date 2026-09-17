@@ -1,0 +1,24 @@
+experiment_id: E30Z_SMOKE
+schema: dpc-snn-e30zp-bnci2014-004/v1
+status: implementation_smoke_only
+dataset:
+  subjects: [1]
+  training_sessions: [01T, 02T, 03T]
+  evaluation_sessions: [04E, 05E]
+  training_trials_minimum: 400
+  training_trials_maximum: 440
+  evaluation_trials_minimum: 280
+  evaluation_trials_maximum: 400
+  channels: [C3, Cz, C4]
+  source_sfreq: 250.0
+  epoch_tmin: -1.0
+  epoch_tmax: 4.0
+seeds: [0]
+teacher_models: [atcnet, fbcnet]
+training:
+  student_fixed_epochs: 2
+  student_batch_size: 48
+  student_learning_rate: 0.001
+  student_weight_decay: 0.001
+  firing_rate_weight: 0.0
+model: {n_classes: 2, hidden_channels: 64, decoder_layers: 2, readout_features: 96, dropout: 0.25}

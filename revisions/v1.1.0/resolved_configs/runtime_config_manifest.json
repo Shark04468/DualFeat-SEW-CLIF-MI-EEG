@@ -1,0 +1,20 @@
+{
+  "schema": "dpc-snn-reviewer-runtime-configs/v1",
+  "status": "resolved",
+  "lineage": "RECOVERED_NEW_PARENT",
+  "paths": {
+    "e31": "/root/autodl-tmp/DPC-SNN_storage/runs/revision_20260901/v31_recovered",
+    "publication": "/root/autodl-tmp/DPC-SNN_storage/runs/revision_20260901/publication",
+    "v30": "/root/autodl-tmp/DPC-SNN_storage/runs/revision_20260901/v30_recovered",
+    "baseline_source": "/root/autodl-tmp/DPC-SNN_storage/baselines/source",
+    "training_labels": "/root/autodl-tmp/DPC-SNN_storage/recovery_labels"
+  },
+  "parent_barrier_sha256": {
+    "e31": "e0d5b655533ec022e96df8ce834b7951b558516cb59f449cafa2d65b3f02dd06",
+    "v30": "41eb514f61798ce142aa6be4160ceca99e597345e292774e90bd349eb269af4e"
+  },
+  "configs": {
+    "/root/autodl-tmp/DPC-SNN_storage/runs/revision_20260901/control/reviewer_controls.resolved.yaml": "36d58fd64016cd4325d526387a296056794830380617a5fa3e589a792234445a",
+    "/root/autodl-tmp/DPC-SNN_storage/runs/revision_20260901/control/bci2a_binary_sensitivity.resolved.yaml": "978ee71df4457b21f95727bb95c21a8193abb424acbc3bcde2aa8e3b860cfd58"
+  }
+}

@@ -1,0 +1,150 @@
+experiment_id: V8_P0_PROTOCOL
+protocol: dpc_snn_v8_accuracy_first
+architecture_version: v8_accuracy_first
+schema_version: 1
+
+execution_order:
+  - P0
+  - E0
+  - E1
+  - E2
+  - E5
+  - E2_selected
+  - E3
+  - E4
+  - architecture_freeze
+  - E6
+  - E7
+  - E8
+  - E9
+
+objective:
+  primary: maximize_mi_eeg_accuracy_under_locked_protocol
+  claims:
+    - strong_continuous_eeg_representation
+    - matched_snn_necessity
+    - optional_incremental_delay
+
+development:
+  dataset: bci2a
+  subjects: [1, 3, 8]
+  allowed_session: T
+  folds: run_grouped_leave_one_run_out
+  n_splits: 6
+  selection_seed: 0
+  screening_seeds: [0]
+  confirmation_seeds: [0, 1, 2]
+  random_trial_split_allowed: false
+
+heldout_locks:
+  bci2a_session_e:
+    locked_until: E6_architecture_freeze
+    may_select_architecture: false
+    may_select_checkpoint: false
+  openbmi_session_s2:
+    locked_until: E8_external_confirmation
+    may_select_architecture: false
+    may_select_checkpoint: false
+
+stages:
+  E0:
+    name: engineering_invariants
+    requires: all_tests_and_cuda_smoke_pass
+  E1:
+    name: locked_unified_baselines
+    models: [EEGNet, FBCNet, ATCNet, TCFormer, EEG-Conformer, Torch-PLIF-MI, BFATCNet]
+    reproducibility_tolerance_pp: 0.2
+  E2:
+    name: zero_delay_accuracy_scaffold
+    gate:
+      maximum_mean_loss_to_strongest_baseline_pp: 0.5
+  E3:
+    name: optional_delay_auxiliary
+    gate:
+      minimum_median_full_minus_locked_zero_pp: 0.5
+      minimum_positive_subject_seed_pairs: 6
+      required_subject_seed_pairs: 9
+      must_not_underperform_no_delay: true
+  E4:
+    name: matched_ann_plif_clif_sew_clif_controls
+    gate:
+      maximum_four_second_loss_to_ann_pp: 0.3
+      require_accuracy_or_early_or_sparsity_win: true
+  E5:
+    name: bounded_session_t_hpo
+    maximum_unique_configurations: 24
+    heldout_access: forbidden
+  E6:
+    name: frozen_bci2a_t_to_e_evaluation
+    subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    seeds: [0, 1, 2, 3, 4]
+    train_session: T
+    evaluation_session: E
+  E7:
+    name: frozen_snn_utility_evaluation
+    metrics:
+      - early_decision
+      - noise_robustness
+      - channel_drop_robustness
+      - calibration_sample_efficiency
+      - activation_sparsity
+      - operation_proxy
+  E8:
+    name: openbmi_external_confirmation
+    train_session: S1
+    evaluation_session: S2
+    architecture_changes_allowed: false
+  E9:
+    name: frozen_ablation_robustness_and_statistics
+    architecture_changes_allowed: false
+
+hpo:
+  maximum_unique_configurations: 24
+  frontend_budget: 12
+  decoder_budget: 8
+  training_budget: 4
+  broad_screen_seed: 0
+  top_k_for_three_seeds: 3
+
+comparisons:
+  primary:
+    - v8_snn_vs_strongest_unified_baseline
+    - v8_snn_vs_parameter_matched_ann
+    - full_delay_vs_locked_zero
+  delay_controls:
+    - no_delay_branch
+    - locked_zero_same_branch_and_checkpoint
+    - full_static_audited_delay
+  full_and_zero_may_differ_only_in: delay_operator
+
+statistics:
+  primary_unit: subject
+  average_seeds_within_subject_first: true
+  hierarchical_bootstrap_repeats: 10000
+  exact_paired_sign_flip: true
+  primary_comparison_correction: holm
+  metrics: [accuracy, macro_f1, kappa, nll, ece]
+  save_trial_predictions: true
+
+fingerprint:
+  schema: dpc-snn-v8-accuracy-first-fingerprint/v1
+  algorithm: sha256
+  require_complete_source_tree: true
+  git_metadata_required: false
+  resume_requires_complete_equality: true
+  components:
+    - protocol
+    - resolved_run_config
+    - source_tree
+    - data
+    - split
+    - augmentation
+    - prior
+    - checkpoint
+    - environment
+
+storage:
+  root: /root/autodl-tmp/DPC-SNN_storage
+  run_namespace: runs/v8_accuracy_first
+  directories: [data, cache, runs, checkpoints, tmp, logs, code]
+  maximum_system_disk_growth_gb: 5

@@ -1,0 +1,31 @@
+experiment_id: V8_E8_OPENBMI_EXTERNAL_CONFIRMATION
+protocol: openbmi_s1_train_s2_single_evaluation
+stage: openbmi_confirmation
+seeds: [0, 1, 2, 3, 4]
+arms: [frozen_primary, matched_ann]
+
+architecture_adaptation:
+  permitted_change: four_class_head_to_binary_head_only
+  source_classes: 4
+  target_classes: 2
+  target_sfreq: 250
+  channel_policy: exact_ordered_intersection_with_frozen_22_sensor_basis
+  anti_aliasing: scipy_resample_poly
+
+training:
+  train_session: S1
+  fixed_epoch_from_bci2a_freeze: true
+  retrain_from_scratch: true
+  target_session_checkpoint_selection: false
+
+evaluation:
+  session: S2
+  evaluate_once_per_subject_seed_arm: true
+  model_state_must_not_change: true
+  save_per_trial_predictions: true
+
+analysis:
+  primary_metric: subject_macro_accuracy
+  subject_is_inferential_unit: true
+  seeds_are_paired_optimization_repeats: true
+  post_s2_tuning_allowed: false

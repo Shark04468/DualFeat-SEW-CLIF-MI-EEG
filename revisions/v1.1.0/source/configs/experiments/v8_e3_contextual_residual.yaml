@@ -1,0 +1,105 @@
+experiment_id: V8_E3_CONTEXTUAL_RESIDUAL
+protocol: bci2a_session_t_nested_six_fold_oof
+architecture_version: dpc_snn_v8_accuracy_first_r4_gain_invariant_envelope
+schema_version: 1
+stage: development
+
+subjects: [1, 3, 8]
+seeds: [0, 1, 2]
+parent_stage: E2
+parent_variant: full_ann
+
+selection:
+  session: T
+  method: nested_six_fold_residual_epoch_selection
+  n_splits: 6
+  split_seed: 0
+  max_residual_epochs: 30
+  patience: 10
+  minimum_epochs_before_stopping: 5
+  include_parent_epoch_zero: true
+  checkpoint_metric: validation_kappa
+
+training:
+  trainable_parameters:
+    - delay_fusion_raw
+    - delay_auxiliary.context_weight
+    - delay_auxiliary.context_bias
+    - delay_auxiliary.context_route_raw
+  batch_size: 4
+  gradient_accumulation_steps: 2
+  effective_batch_size: 8
+  learning_rate: 0.02
+  weight_decay: 0.0001
+  max_gradient_norm: 5.0
+  warmup_fraction: 0.10
+  endpoint_weights: [0.0, 0.15, 0.35, 0.0]
+  endpoint_loss_weight: 0.20
+  firing_rate_weight: 0.0
+  spatial_orthogonality_weight: 0.0
+  statistical_orthogonality_weight: 0.0
+  label_smoothing: 0.05
+
+augmentation:
+  enabled: true
+  parent_scope: current_inner_or_outer_train_batch_only
+  segments: 8
+  probability: 0.5
+  carrier_scale_range: [0.9, 1.1]
+
+delay:
+  stage: contextual_slow_residual
+  auxiliary_enabled: true
+  allow_cross_band: false
+  route_scope: within_band
+  signal_mode: slow_envelope
+  contextual_residual_enabled: true
+  contextual_residual_bound: 0.5
+  phase_residual_enabled: false
+  phase_residual_bound: 0.25
+  maximum_routes: 256
+  maximum_delay_samples: 8
+  fusion_initial: 0.0
+  fusion_bound: 0.25
+  placement: before_shared_temporal_pyramid
+  prior:
+    fit_scope: active_inner_or_outer_training_partition_only
+    analytic_representation: exact_online_physical_fast_after_fold_train_fixed_gain
+    bands: 12
+    nodes: 22
+    bootstrap_samples: 128
+    grid_oversample: 4
+    minimum_bayes_factor: 3.0
+    minimum_bootstrap_frequency: 0.70
+    minimum_direction_probability: 0.80
+    require_all_negative_controls: true
+    edge_policy: accepted_within_band_top_probability_ceiling
+
+preprocessing:
+  session: T
+  reference: CAR
+  baseline_interval_seconds: [-1.0, 0.0]
+  task_interval_seconds: [0.0, 4.0]
+  physical_basis: frozen_exact_22_sensor_basis
+  gain: fold_train_inverse_physical_carrier_rms
+  cache_source: verified_parent_e2_unit_gain_physical_rates
+  fast_rate_hz: 125.0
+
+data_access:
+  allowed_session: T
+  heldout_session_e_accessed: false
+  openbmi_session_s2_accessed: false
+
+controls:
+  matched_zero_changes_only: complete_delay_operator_to_zero
+  require_nonzero_matched_control_current: true
+  matched_zero_changes_only: delay_posterior_to_point_mass_at_zero
+  require_state_immutable_during_paired_evaluation: true
+
+gate:
+  pairs: 9
+  primary_delta: full_accuracy_minus_matched_zero_accuracy
+  minimum_median_gain_pp: 0.5
+  minimum_positive_pairs: 6
+  subject_is_inferential_unit: true
+  pooled_trials_are_diagnostic_only: true

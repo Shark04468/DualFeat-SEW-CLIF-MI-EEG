@@ -1,0 +1,10 @@
+{
+  "expected_files": 536,
+  "verified_files": 536,
+  "issues": [],
+  "verified_tree_digest": "0330efd60134a83c2250682a465940c9b3c0dd49f410d9d02ac50da511da1950",
+  "target_tree_digest": "0330efd60134a83c2250682a465940c9b3c0dd49f410d9d02ac50da511da1950",
+  "complete_match": true,
+  "potential_secret_findings": [],
+  "no_project_code_executed": true
+}

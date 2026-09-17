@@ -1,0 +1,44 @@
+experiment_id: E30Z_BNCI2014_004_OBJECTIVE_PURE_REPLICATION
+schema: dpc-snn-e30zp-bnci2014-004/v1
+status: registered_after_parent_blind_evaluation
+parent_run_id: E30_blind_f4e74252b318
+protocol: reuse_parent_training_frontend_then_checkpoint_barrier_then_evaluate_04E_05E
+dataset:
+  name: BNCI2014_004
+  public_name: BCI Competition IV Dataset 2b
+  subjects: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  training_sessions: [01T, 02T, 03T]
+  evaluation_sessions: [04E, 05E]
+  training_trials_minimum: 400
+  training_trials_maximum: 440
+  evaluation_trials_minimum: 280
+  evaluation_trials_maximum: 400
+  channels: [C3, Cz, C4]
+  source_sfreq: 250.0
+  epoch_tmin: -1.0
+  epoch_tmax: 4.0
+seeds: [0, 1, 2, 3, 4]
+teacher_models: [atcnet, fbcnet]
+training:
+  student_fixed_epochs: 80
+  student_batch_size: 48
+  student_learning_rate: 0.001
+  student_weight_decay: 0.001
+  firing_rate_weight: 0.0
+preprocessing:
+  clip_after_gain: 12.0
+model:
+  n_classes: 2
+  hidden_channels: 64
+  decoder_layers: 2
+  readout_features: 96
+  dropout: 0.25
+comparability:
+  parent_ann_predictions_read_only: true
+  parent_gain_read_only: true
+  parent_standardizer_read_only: true
+  parent_teacher_checkpoints_read_only: true
+  same_initialisation_seed: true
+disclosure:
+  evaluation_sessions_already_accessed_by_parent_e30: true
+  interpretation: retrospective_objective_pure_replication_not_new_blind_confirmation

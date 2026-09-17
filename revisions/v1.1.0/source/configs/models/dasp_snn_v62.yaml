@@ -1,0 +1,48 @@
+name: dasp_snn_v62
+architecture_version: dasp_snn_v6_2_r1
+n_channels: 22
+n_classes: 4
+channel_names:
+  [Fz, FC3, FC1, FCz, FC2, FC4, C5, C3, C1, Cz, C2, C4, C6, CP3, CP1, CPz, CP2, CP4, P1, Pz, P2, POz]
+sfreq: 250
+epoch_tmin: -1.0
+task_tmin: 0.0
+task_tmax: 4.0
+n_bands: 12
+band_edges_hz:
+  - [6, 8]
+  - [8, 10]
+  - [10, 12]
+  - [12, 14]
+  - [14, 17]
+  - [17, 20]
+  - [20, 23]
+  - [23, 26]
+  - [26, 30]
+  - [30, 34]
+  - [34, 37]
+  - [37, 40]
+analytic_taps: 129
+envelope_taps: 33
+n_nodes: 16
+spatial_rank: 4
+freeze_spatial: true
+route_rank: 4
+delay_rank: 4
+fast_max_delay: 4
+slow_max_delay: 16
+fast_initial_contribution: 0.10
+dynamic_context_features: 0
+temporal_dilations: [1, 2, 4, 8]
+temporal_depth: 2
+temporal_scale_attention: true
+use_geometry: true
+geometry_components: 6
+geometry_windows_seconds: [0.25, 0.5, 1.0]
+snn_channels: 64
+decoder_kind: clif
+decoder_layers: 2
+decoder_decays: [0.65, 0.90, 0.975]
+dropout: 0.25
+force_zero_delay: false
+parameter_ceiling: 220000

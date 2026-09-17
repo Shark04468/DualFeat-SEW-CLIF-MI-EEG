@@ -1,0 +1,60 @@
+experiment_id: REV_E5_BCI2A_BINARY_LH_RH
+schema: dpc-snn-bci2a-binary-sensitivity/v1
+status: frozen_before_evaluation_access
+lineage: RECOVERED_NEW_PARENT
+parents:
+  e31: /root/autodl-tmp/DPC-SNN_storage/runs/revision_20260901/v31_recovered
+  training_labels: /root/autodl-tmp/DPC-SNN_storage/recovery_labels
+dataset:
+  parent_name: bci2a
+  output_name: bci2a_binary
+  subjects:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  source_labels:
+    left_hand: 1
+    right_hand: 2
+  remapped_labels:
+    left_hand: 0
+    right_hand: 1
+  n_classes: 2
+seeds:
+- 0
+- 1
+- 2
+numeric_budgets_per_class:
+- 25
+- 50
+include_all_available: true
+variants:
+  ann_sew_binary:
+    model: ann_sew
+    firing_rate_weight: 0.0
+  sew_clif_binary:
+    model: sew_clif
+    firing_rate_weight: 0.01
+training:
+  fixed_epochs: 80
+  smoke_epochs: 2
+  batch_size: 48
+  learning_rate: 0.001
+  weight_decay: 0.001
+  gradient_clip_norm: 5.0
+  dropout: 0.25
+  soft_gate_slope: 10.0
+evaluation:
+  metrics:
+  - accuracy
+  - balanced_accuracy
+  - kappa
+  - macro_f1
+  requires_global_checkpoint_barrier: true
+  save_trial_predictions: true
+  evaluation_gradient_updates: false
